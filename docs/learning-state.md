@@ -59,24 +59,27 @@ COMPLETE
 - Customer Domain Model was introduced as a pure Java class.
 - Customer retains its internal UUID, name, and creation time.
 - Customer unit test verifies the initial model attributes.
+- CustomerRepository was introduced as the Domain-side save port.
 
 ## Changed Files
 
 ```text
 src/main/java/com/example/wealth_platform/customer/domain/Customer.java
+src/main/java/com/example/wealth_platform/customer/domain/CustomerRepository.java
 src/test/java/com/example/wealth_platform/customer/domain/CustomerTest.java
 ```
 
 ## Current Implementation
 
 ```text
-Customer Domain Model only; Customer provisioning Use Case is not implemented.
+Customer Domain Model and CustomerRepository port; Customer provisioning Use Case is not implemented.
 ```
 
 ## Decisions / Reasons
 
 - Customer is a pure Java Domain Model without Spring or persistence dependencies.
 - Customer identity uses UUID, with name and createdAt as the minimal conceptual attributes from DM-003.
+- CustomerRepository is a Domain-side port with a single save operation; infrastructure will implement it later.
 
 ## Alternatives Considered
 
