@@ -93,20 +93,9 @@ Administration DomainのUse Caseは以下を参照する。
 
 # 9. Ledger Domain
 
-初期バージョンでは、Actorが直接開始するLedger固有のUse Caseは定義しない。
+Ledger DomainのUse Case上の位置付けは以下を参照する。
 
-LedgerはBankingおよびBrokerageにおける現金移動Use Caseを成立させる内部ドメイン責務として扱う。
-
-例えば以下のUse CaseではLedgerへの記録がPostconditionとなる。
-
-* Deposit Money
-* Withdraw Money
-* Transfer Between Own Accounts
-* Transfer to Another Customer
-* Transfer Cash from Bank
-* Transfer Cash to Bank
-
-Ledger固有の管理画面や監査履歴閲覧機能についてはFuture Considerationとする。
+* [Ledger Domain](./use-cases/ledger.md)
 
 ---
 
