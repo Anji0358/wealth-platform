@@ -603,6 +603,10 @@ However, domain ownership rules remain mandatory.
 
 For example, Customer A must not be able to operate Customer B's account through ordinary Customer operations.
 
+The learning environment uses a trusted development-only Acting Customer input such as `X-Acting-Customer-Id`. Presentation converts it to a transport-agnostic `ActorContext`, and the Application layer validates persisted ownership.
+
+Path, query, and body Customer IDs are target identifiers and must not be treated as caller identity. The development mechanism is not production Authentication or Authorization.
+
 ---
 
 ## 12. Availability and Recovery

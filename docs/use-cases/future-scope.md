@@ -13,11 +13,12 @@
 ### Phase 6
 
 * Limit Order
+* Cancel Order（UC-BRK-006として概要定義済み、OQ-UC-003の解決後に確定する）
 * Partial Execution
 * 1 Order : N Executions
 * 追加のMarket Price生成モデル
 
-これらを実装するPhaseへ移行する際に、新しいUse CaseおよびBusiness Rulesを定義する。
+これらを実装するPhaseへ移行する際に、未定義のUse CaseとBusiness Rulesを追加し、UC-BRK-006を含むNeeds Review仕様を確定する。
 
 ---
 

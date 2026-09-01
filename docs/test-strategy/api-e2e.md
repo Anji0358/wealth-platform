@@ -51,6 +51,18 @@ Transaction correctness requires DB-backed integration tests.
 
 ---
 
+### TS-API-005 — Development Acting Identity Contract Is Tested
+
+API contract tests verify that `X-Acting-Customer-Id` is parsed as a UUID and translated to `ActorContext`, and that a path/body `customerId` does not override the Acting Customer.
+
+---
+
+### TS-API-006 — Security Read Status Semantics Are Tested
+
+API tests verify that `GET /securities` defaults to ACTIVE, `status=DISABLED` returns disabled Securities, direct read returns a DISABLED Security, and every Security response includes `status`.
+
+---
+
 ## End-to-End Integration
 
 ### TS-E2E-001 — Important Financial Flows Have Full-Stack Tests

@@ -4,23 +4,23 @@ Customerに関するUse Caseを定義する。
 
 ---
 
-## UC-CUS-001 — Register Customer
+## UC-CUS-001 — Provision Customer Record
 
 **Phase:** Phase 1 — Core Banking / MVP  
 **Status:** Confirmed
 
 ### Actor
 
-Customer
+Administrator / System
 
 ### Preconditions
 
-- 同一のCustomerとして既に登録済みではないこと。
+- Customer record作成に必要な情報が提供されていること。
 
 ### Main Flow
 
-1. Customerが登録に必要な情報を提供する。
-2. システムが登録内容を検証する。
+1. AdministratorまたはSystemがCustomer record作成に必要な情報を提供する。
+2. システムが内容を検証する。
 3. 新しいCustomerを登録する。
 4. Customerを識別するための識別子を確定する。
 
@@ -34,17 +34,15 @@ Customer
 - Customerとして登録できない入力の場合
   - 登録を拒否する。
   - Customerを新規作成しない。
-- 同一Customerとして扱われる登録が既に存在する場合
-  - 重複登録を拒否する。
-  - 既存Customerを変更しない。
 
 ### Related Business Rules
 
-- TBD — `business-rules.md` 作成後に紐付ける。
+- BR-CUS-001 — Customer Identity Is Internal
+- BR-CUS-003 — Customer Record Is Provisioned by Administrator or System
 
 ---
 
-## UC-CUS-002 — View Customer Profile
+## UC-CUS-002 — View Own Customer Profile
 
 **Phase:** Phase 1 — Core Banking / MVP  
 **Status:** Confirmed
@@ -59,10 +57,11 @@ Customer
 
 ### Main Flow
 
-1. Customerの基本情報を取得する。
-2. Customerが保有するBank Accountの識別情報を取得する。
-3. Securities Accountの有無を取得する。
-4. Customer Profileとして返す。
+1. ActorContextからActing Customerを特定する。
+2. Acting Customerの基本情報を取得する。
+3. Customerが保有するBank Accountの識別情報を取得する。
+4. Securities Accountの有無を取得する。
+5. Customer Profileとして返す。
 
 ### Postconditions
 
@@ -77,4 +76,5 @@ Customer
 
 ### Related Business Rules
 
-- TBD — `business-rules.md` 作成後に紐付ける。
+- BR-CUS-001 — Customer Identity Is Internal
+- BR-CUS-004 — Acting Customer Identity Is Trusted but Transport-Agnostic

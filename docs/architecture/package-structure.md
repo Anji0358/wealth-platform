@@ -97,3 +97,5 @@ This is illustrative, not a requirement to create every class immediately.
 4. HTTP DTOs remain under presentation.
 5. Application Use Cases coordinate modules but should not become utility collections.
 6. `shared` remains intentionally limited.
+
+Transport-agnostic cross-cutting concepts such as `ActorContext` may live in a narrowly scoped `shared/actor` package. HTTP header parsing remains in Presentation.

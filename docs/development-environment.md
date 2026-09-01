@@ -19,6 +19,8 @@ The environment is designed to support:
 
 ## Fixed Environment Baseline
 
+This table defines the approved target baseline. A tool listed here is not necessarily configured in the repository before the phase that first requires it. For example, Testcontainers dependencies and integration-test separation are introduced when persistence integration tests begin.
+
 ```text
 Java                  21
 Spring Boot           4.1.1

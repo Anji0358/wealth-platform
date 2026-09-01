@@ -64,9 +64,11 @@ ArchUnit may be added after packages stabilize.
 
 ---
 
-## Initial ADR Candidates
+## Recorded ADRs and Future Candidate
 
 ### ADR-001 — Use Modular Monolith
+
+**Status:** Accepted
 
 Record:
 
@@ -76,6 +78,8 @@ Record:
 - future migration implications.
 
 ### ADR-002 — Separate Domain and Persistence Models
+
+**Status:** Accepted
 
 Record:
 

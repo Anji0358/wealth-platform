@@ -167,13 +167,42 @@ Viewing Market Prices, placing Orders, or valuing a Portfolio never generates a 
 
 Only the dedicated Market Price generation process creates new Market Prices.
 
-## Open Question Reference
+## Parameter-Change Timing Reference
 
-The effective timing of changes to `Expected Return μ` and `Volatility σ` remains an Open Question for `market-simulation.md`.
+Changes to `Expected Return μ` and `Volatility σ` apply to the next Market Price that has not yet been generated, as defined by `market-simulation.md` MS-029.
 
-Examples:
+Already-persisted Market Prices are never recalculated.
 
-- effective immediately for the same Business Day;
-- effective from the next Business Day.
+---
 
-This question does not block the current business-rules document.
+### BR-MKT-012 — Security Existence and Buy Eligibility Are Separate
+
+**Status:** Confirmed
+**Phase:** Phase 2+
+
+#### Rule
+
+A `DISABLED` Security continues to exist and remains directly readable.
+
+`DISABLED` prohibits only new Buy Orders. Existing holdings may be sold, and Portfolio display, Order/Execution history, Market Price history, and direct Security reads remain available.
+
+---
+
+### BR-MKT-013 — Security Listing and Direct Read Include Status
+
+**Status:** Confirmed
+**Phase:** Phase 2
+
+#### Rule
+
+The default Customer Security list contains `ACTIVE` Securities.
+
+An explicit status filter may request `DISABLED` Securities. Direct read of a `DISABLED` Security is allowed.
+
+Every Security list item and direct-read response includes Security status so clients do not infer Buy eligibility from existence alone.
+
+#### Related Use Cases
+
+- UC-MKT-004 List Securities
+- UC-MKT-002 View Latest Market Prices
+- UC-MKT-003 View Market Price History

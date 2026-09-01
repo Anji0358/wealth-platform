@@ -109,6 +109,8 @@ No unique email or real-world identity key is required in the initial version.
 
 Duplicate real-world Customer detection remains a Future Consideration.
 
+Customer records are provisioned by Administrator/System responsibility rather than Customer self-registration.
+
 ---
 
 ### DM-004 — Customer to Bank Account Cardinality
@@ -955,6 +957,8 @@ administrator table
 ```
 
 A dedicated identity model should be introduced only when authentication/authorization becomes actual project scope.
+
+The development-only Acting Customer header and `ActorContext` are not persisted identity entities. Existing Customer ownership foreign keys remain the authoritative persisted relationship for Application ownership checks.
 
 ---
 

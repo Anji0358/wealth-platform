@@ -32,16 +32,9 @@ Use Caseの目的および主要な振る舞いが確定しており、実装対
 
 Use Caseを実装すること自体は確定しているが、実装前に詳細仕様の追加検討が必要な状態。
 
-原則として、
+PhaseとSpecification Statusは独立している。後期Phaseであることだけを理由にNeeds Reviewとしてはならない。
 
-* Phase 1 — Core Banking / MVP：Confirmed
-* Phase 2 — Market：Needs Review
-* Phase 3 — Trading：Needs Review
-* Phase 4 — Position / Portfolio：Needs Review
-
-とする。
-
-ただし、Phase 1であっても未決のBusiness Ruleを持つUse CaseはNeeds Reviewとする。
+Needs Reviewには、未解決のOQ IDまたは具体的なReview Reasonを必ず記載する。未決事項がなく実装可能なUse Caseは、Phaseに関係なくConfirmedとする。
 
 ---
 
@@ -53,10 +46,10 @@ Use Caseを実装すること自体は確定しているが、実装前に詳細
 
 * [Customer Use Cases](./use-cases/customer.md)
 
-| ID         | Use Case              | Phase                        | Status    |
-| ---------- | --------------------- | ---------------------------- | --------- |
-| UC-CUS-001 | Register Customer     | Phase 1 — Core Banking / MVP | Confirmed |
-| UC-CUS-002 | View Customer Profile | Phase 1 — Core Banking / MVP | Confirmed |
+| ID         | Use Case                  | Phase                        | Status    |
+| ---------- | ------------------------- | ---------------------------- | --------- |
+| UC-CUS-001 | Provision Customer Record | Phase 1 — Core Banking / MVP | Confirmed |
+| UC-CUS-002 | View Own Customer Profile | Phase 1 — Core Banking / MVP | Confirmed |
 
 ---
 
@@ -75,7 +68,7 @@ Use Caseを実装すること自体は確定しているが、実装前に詳細
 | UC-BNK-005 | Transfer to Another Customer  | Phase 1 — Core Banking / MVP | Confirmed    |
 | UC-BNK-006 | View Bank Account             | Phase 1 — Core Banking / MVP | Confirmed    |
 | UC-BNK-007 | View Bank Transaction History | Phase 1 — Core Banking / MVP | Confirmed    |
-| UC-BNK-008 | Close Bank Account            | Phase 1 — Core Banking / MVP | Needs Review |
+| UC-BNK-008 | Close Bank Account            | Phase 1 — Core Banking / MVP | Confirmed    |
 
 ---
 
@@ -90,14 +83,14 @@ Use Caseを実装すること自体は確定しているが、実装前に詳細
 | UC-BRK-001 | Open Securities Account  | Phase 1 — Core Banking / MVP   | Confirmed    |
 | UC-BRK-002 | Transfer Cash from Bank  | Phase 1 — Core Banking / MVP   | Confirmed    |
 | UC-BRK-003 | Transfer Cash to Bank    | Phase 1 — Core Banking / MVP   | Confirmed    |
-| UC-BRK-004 | Place Buy Order          | Phase 3 — Trading              | Needs Review |
-| UC-BRK-005 | Place Sell Order         | Phase 3 — Trading              | Needs Review |
-| UC-BRK-006 | Cancel Order             | Phase 3 — Trading              | Needs Review |
-| UC-BRK-007 | View Orders              | Phase 3 — Trading              | Needs Review |
-| UC-BRK-008 | View Executions          | Phase 3 — Trading              | Needs Review |
-| UC-BRK-009 | View Positions           | Phase 4 — Position / Portfolio | Needs Review |
+| UC-BRK-004 | Place Buy Order          | Phase 3 — Trading              | Confirmed    |
+| UC-BRK-005 | Place Sell Order         | Phase 3 — Trading              | Confirmed    |
+| UC-BRK-006 | Cancel Order             | Phase 6 — Advanced Learning    | Needs Review |
+| UC-BRK-007 | View Orders              | Phase 3 — Trading              | Confirmed    |
+| UC-BRK-008 | View Executions          | Phase 3 — Trading              | Confirmed    |
+| UC-BRK-009 | View Positions           | Phase 4 — Position / Portfolio | Confirmed    |
 | UC-BRK-010 | View Securities Account  | Phase 1 — Core Banking / MVP   | Confirmed    |
-| UC-BRK-011 | Close Securities Account | Phase 1 — Core Banking / MVP   | Needs Review |
+| UC-BRK-011 | Close Securities Account | Phase 1 — Core Banking / MVP   | Confirmed    |
 
 ---
 
@@ -107,11 +100,12 @@ Use Caseを実装すること自体は確定しているが、実装前に詳細
 
 * [Market Use Cases](./use-cases/market.md)
 
-| ID         | Use Case                     | Phase            | Status       |
-| ---------- | ---------------------------- | ---------------- | ------------ |
-| UC-MKT-001 | Generate Daily Market Prices | Phase 2 — Market | Needs Review |
-| UC-MKT-002 | View Latest Market Prices    | Phase 2 — Market | Needs Review |
-| UC-MKT-003 | View Market Price History    | Phase 2 — Market | Needs Review |
+| ID         | Use Case                     | Phase            | Status    |
+| ---------- | ---------------------------- | ---------------- | --------- |
+| UC-MKT-001 | Generate Daily Market Prices | Phase 2 — Market | Confirmed |
+| UC-MKT-002 | View Latest Market Prices    | Phase 2 — Market | Confirmed |
+| UC-MKT-003 | View Market Price History    | Phase 2 — Market | Confirmed |
+| UC-MKT-004 | List Securities              | Phase 2 — Market | Confirmed |
 
 ---
 
@@ -123,8 +117,8 @@ Use Caseを実装すること自体は確定しているが、実装前に詳細
 
 | ID         | Use Case                | Phase                          | Status       |
 | ---------- | ----------------------- | ------------------------------ | ------------ |
-| UC-PFL-001 | View Portfolio Overview | Phase 4 — Position / Portfolio | Needs Review |
-| UC-PFL-002 | View Profit and Loss    | Phase 4 — Position / Portfolio | Needs Review |
+| UC-PFL-001 | View Portfolio Overview | Phase 4 — Position / Portfolio | Confirmed    |
+| UC-PFL-002 | View Profit and Loss    | Phase 4 — Position / Portfolio | Confirmed    |
 
 ---
 
@@ -140,9 +134,10 @@ Use Caseを実装すること自体は確定しているが、実装前に詳細
 | UC-ADM-002 | Unfreeze Bank Account         | Phase 1 — Core Banking / MVP | Confirmed    |
 | UC-ADM-003 | Restrict Securities Account   | Phase 1 — Core Banking / MVP | Confirmed    |
 | UC-ADM-004 | Unrestrict Securities Account | Phase 1 — Core Banking / MVP | Confirmed    |
-| UC-ADM-005 | Register Security             | Phase 2 — Market             | Needs Review |
-| UC-ADM-006 | Update Security Parameters    | Phase 2 — Market             | Needs Review |
-| UC-ADM-007 | Disable Security              | Phase 2 — Market             | Needs Review |
+| UC-ADM-005 | Register Security             | Phase 2 — Market             | Confirmed    |
+| UC-ADM-006 | Update Security Parameters    | Phase 2 — Market             | Confirmed    |
+| UC-ADM-007 | Disable Security              | Phase 2 — Market             | Confirmed    |
+| UC-ADM-008 | Enable Security               | Phase 2 — Market             | Confirmed    |
 
 ---
 
@@ -156,13 +151,13 @@ LedgerのUse Case上の位置付けは以下を参照する。
 
 ---
 
-## 4. Open Questions
+## 4. Cross-Domain Decision Register
 
-Use Caseに関連する未決事項は以下で一元管理する。
+Use Caseに関連して提起された横断的なQuestionと、その現在の決定状態は以下で管理する。
 
-* [Use Case Open Questions](./use-cases/open-questions.md)
+* [Use Case Decision Register](./use-cases/open-questions.md)
 
-Open Questionは `OQ-UC-XXX` の形式で識別し、各DomainのUse Caseから必要なQuestionを参照する。
+Questionは `OQ-UC-XXX` の形式で識別し、解決後も決定の追跡に同じIDを使用する。
 
 ---
 

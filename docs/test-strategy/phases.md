@@ -5,6 +5,8 @@
 Primary tests:
 
 - Customer/Bank Account Domain Unit Tests;
+- Administrator/System Customer provisioning and Own Profile tests;
+- ActorContext ownership and impersonation-rejection tests;
 - Securities Account basics;
 - LedgerTransaction invariants;
 - Application Use Case tests;
@@ -13,6 +15,9 @@ Primary tests:
 - API contract tests;
 - Transfer E2E;
 - rollback/atomicity tests.
+- Bank Accountのfreeze / unfreeze / close状態遷移テスト;
+- Securities Accountのrestrict / unrestrict / close状態遷移テスト;
+- Deposit、Withdrawal、Bank間TransferおよびBank-Securities間Transferの残高・Ledger原子性テスト.
 
 SQL learning:
 
@@ -32,6 +37,8 @@ Primary tests:
 - Market Price idempotency;
 - Catch-Up ordering;
 - Security parameter timing;
+- Security register / update / disable / enable状態遷移テスト;
+- Security list default/status-filter/direct-read tests, including response status;
 - PostgreSQL uniqueness.
 
 SQL learning:
@@ -51,6 +58,7 @@ Primary tests:
 - Buy E2E;
 - Sell E2E;
 - atomic Cash/Position/Ledger updates;
+- Buy/SellそれぞれのCash、Position、Order、Execution、Ledger原子性テスト;
 - historical Execution values.
 
 SQL learning:

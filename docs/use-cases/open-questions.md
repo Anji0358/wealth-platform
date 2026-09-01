@@ -1,190 +1,125 @@
-# Use Case Open Questions
+# Use Case Decision Register
 
-Use Caseに関連する未決事項を一元管理する。
+Use Caseに関連して提起された横断的なQuestionと、その現在の決定状態を記録する。
 
-各Open Questionは、関連するUse Caseと、決定が必要となる時点を明示する。
+詳細なルールは `business-rules/open-questions.md` および各DomainのBusiness Rulesを正とする。
 
 ---
 
 ## OQ-UC-001 — Acquisition Cost and Realized P/L Method
 
-**Related Use Cases**
+**Status:** Resolved
 
-* UC-BRK-005 Place Sell Order
-* UC-PFL-002 View Profit and Loss
+**Related Use Cases:** UC-BRK-005, UC-PFL-002
 
-**Decision Required Before**
-
-Phase 4 — Position / Portfolio
-
-**Question**
-
-証券売却時の取得原価およびRealized P/Lをどの方式で計算するか。
-
-候補例：
-
-* Average Cost
-* FIFO
-
-詳細はBusiness Rules策定時に判断する。
+**Decision:** Phase 4ではAverage Costを使用する。Average Acquisition Priceは小数を許容し、Remaining Acquisition Costを保持する。FIFOはFuture Considerationとする。
 
 ---
 
 ## OQ-UC-002 — Reservation of Securities for Sell Orders
 
-**Related Use Cases**
+**Status:** Resolved / Refined
 
-* UC-BRK-005 Place Sell Order
-* UC-BRK-006 Cancel Order
+**Related Use Cases:** UC-BRK-005, UC-BRK-006
 
-**Decision Required Before**
-
-Phase 3 — Trading
-
-**Question**
-
-Sell Orderを作成してからExecutionが成立するまで、売却予定数量をどのように拘束するか。
-
-Available QuantityとReserved Quantityの概念をPositionに導入するかを検討する。
+**Decision:** Phase 3の即時全量約定ではReserved Quantityを使用しない。Phase 6で長期注文を導入するときにReserved Quantity / Available Quantityを導入する。
 
 ---
 
 ## OQ-UC-003 — Separation of Execution Processing
 
-**Related Use Cases**
+**Status:** Deferred to Phase 6
 
-* UC-BRK-004 Place Buy Order
-* UC-BRK-005 Place Sell Order
+**Related Use Cases:** UC-BRK-004, UC-BRK-005
 
-**Decision Required Before**
-
-Phase 6 — Advanced Learning
-
-**Question**
-
-Limit OrderまたはPartial Executionを導入するとき、Execution処理をOrder作成Use Caseから分離し、Systemが開始する独立Use Caseとするか。
-
-初期バージョンではOrder作成と即時全量Executionを同一Use Case内で実行する。
+**Current Decision:** Phase 3ではOrder作成と1回の全量Executionを同じUse Caseで実行する。独立したExecution処理はLimit OrderまたはPartial Executionの導入時に再検討する。
 
 ---
 
 ## OQ-UC-004 — Bank Account Closure Conditions
 
-**Related Use Cases**
+**Status:** Resolved
 
-* UC-BNK-008 Close Bank Account
+**Related Use Case:** UC-BNK-008
 
-**Decision Required Before**
-
-UC-BNK-008の実装
-
-**Question**
-
-Bank AccountをCLOSEDへ変更するために必要な条件を決定する。
-
-検討例：
-
-* Current Balanceが0である必要があるか
-* Reserved Amountが0である必要があるか
-* FROZENから直接CLOSEDへ遷移できるか
+**Decision:** `ACTIVE`かつCurrent BalanceとReserved Amountがともに0で、未完了の資金移動がない場合だけ閉鎖できる。`FROZEN -> CLOSED`は許可しない。
 
 ---
 
 ## OQ-UC-005 — Securities Account Closure Conditions
 
-**Related Use Cases**
+**Status:** Resolved
 
-* UC-BRK-011 Close Securities Account
+**Related Use Case:** UC-BRK-011
 
-**Decision Required Before**
-
-UC-BRK-011の実装
-
-**Question**
-
-Securities Accountを閉鎖可能とする条件を決定する。
-
-検討例：
-
-* Current Balanceが0である必要があるか
-* Reserved Amountが0である必要があるか
-* Positionを1件も保有していない必要があるか
-* 未完了Orderが存在してはならないか
+**Decision:** `ACTIVE`かつCurrent BalanceとReserved Amountがともに0で、Positionおよび未完了Orderがない場合だけ閉鎖できる。`RESTRICTED -> CLOSED`は許可しない。
 
 ---
 
 ## OQ-UC-006 — Effect of Disabling a Security
 
-**Related Use Cases**
+**Status:** Resolved
 
-* UC-ADM-007 Disable Security
-* UC-BRK-004 Place Buy Order
-* UC-BRK-005 Place Sell Order
-* UC-BRK-009 View Positions
+**Related Use Cases:** UC-ADM-007, UC-ADM-008, UC-BRK-004, UC-BRK-005, UC-BRK-009
 
-**Decision Required Before**
-
-Phase 3 — Trading
-
-**Question**
-
-SecurityをDisableした場合に、既存Positionや既存Orderをどのように扱うか。
-
-少なくとも過去のExecution、Market Price、Position履歴を削除しないことは確定している。
+**Decision:** `DISABLED`では新規Buy Orderを禁止し、既存Positionを減らすSell Orderは許可する。価格生成と履歴保持は継続し、Administratorは再度Enableできる。
 
 ---
 
 ## OQ-UC-007 — Operations Allowed by Account Status
 
-**Related Use Cases**
+**Status:** Resolved
 
-* Deposit Money
-* Withdraw Money
-* Bank Transfers
-* Brokerage Cash Transfers
-* Freeze / Restrict operations
+**Related Use Cases:** Banking、Brokerage Cash TransferおよびAccount Administrationの各Use Case
 
-**Decision Required Before**
-
-Phase 1 — Core Banking / MVPのBusiness Rules確定
-
-**Question**
-
-Bank AccountがFROZENの場合、およびSecurities AccountがRESTRICTEDの場合に、各操作をどこまで許可するか。
-
-特に以下を決定する必要がある。
-
-* 入金を許可するか
-* 他口座からの受取を許可するか
-* 出金を禁止するか
-* 銀行→証券振替を禁止するか
-* 証券→銀行振替を許可するか
-
-この判断は `business-rules.md` で確定する。
+**Decision:** Bank `FROZEN`は入金・受取・参照を許可するが、送金、出金、証券口座への入金、閉鎖を禁止する。Securities `RESTRICTED`は参照と適格なBank Accountへの資金移動を許可するが、資金受入、新規注文、閉鎖を禁止する。`CLOSED`は履歴参照だけを許可する。
 
 ---
 
 ## OQ-UC-008 — Reservation Lifecycle for Cash Transfers
 
-**Related Use Cases**
+**Status:** Resolved / Refined
 
-* UC-BNK-004
-* UC-BNK-005
-* UC-BRK-002
-* UC-BRK-003
+**Related Use Cases:** UC-BNK-004, UC-BNK-005, UC-BRK-002, UC-BRK-003
 
-**Decision Required Before**
+**Decision:** Phase 1の同期的資金移動およびPhase 3の即時Market OrderではReserved Amountを使用しない。Reservationは処理が意味のある期間Pendingとなる後続Phaseで導入する。
 
-Phase 1 — Core Banking / MVPのBusiness Rules確定
+---
 
-**Question**
+## DR-001 — Customer Security Reads
 
-同期的に完了するPhase 1の資金移動において、Reserved Amountをどのタイミングで設定・解放するか。
+**Status:** Decided
 
-以下を検討する。
+**Decision:** `GET /securities`はCustomer向けUC-MKT-004とする。デフォルトはACTIVE、明示的status filterでDISABLEDも取得できる。DISABLEDの個別参照を許可し、Securityの存在とBuy可能性を分離する。
 
-* Transaction内部だけで一時的にReservedとするか
-* ユーザーから確認可能な中間状態を持つか
-* Phase 1では同期処理のためReservedを実質的に使用しないか
+---
 
-Current Balance / Reserved Amount / Available Balanceの定義自体は確定済みであり、ここでは資金移動Use Caseでのライフサイクルのみを決定する。
+## DR-002 — Customer Record Provisioning
+
+**Status:** Decided
+
+**Decision:** Customer自己登録は現在スコープ外とし、Customer recordはAdministratorまたはSystemが作成する。CustomerにはOwn Profile参照を提供する。
+
+---
+
+## DR-003 — Development Acting Identity and Ownership
+
+**Status:** Decided
+
+**Decision:** 初期学習版は`X-Acting-Customer-Id`等のtrusted development-only identityをPresentationでActorContextへ変換する。Application層がOwnershipを検証し、path/bodyのCustomer IDを本人性の根拠にしない。本番Authentication / AuthorizationはOut of Scopeとする。詳細理由はADR-003に記録する。
+
+---
+
+## DR-004 — Disabled Security Capabilities
+
+**Status:** Decided
+
+**Decision:** DISABLED Securityで禁止するのは新規BUYだけとする。既存保有SELL、Portfolio、取引履歴、価格履歴、個別参照を継続し、Security responseはstatusを含む。
+
+---
+
+## DR-005 — Phase and Specification Status
+
+**Status:** Decided
+
+**Decision:** PhaseとSpecification Statusを分離する。Needs Reviewにはunresolved OQ IDまたは具体的Review Reasonを必須とし、未決事項がなく実装可能ならPhaseに関係なくConfirmedとする。

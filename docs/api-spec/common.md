@@ -243,6 +243,24 @@ The API must not recalculate those facts from today's Market Price or current Po
 
 ## 5. Use Case Mapping
 
+### API-017 — Development Acting Identity Uses a Dedicated Header
+
+**Status:** Confirmed
+
+Customer-initiated requests in the learning environment use:
+
+```text
+X-Acting-Customer-Id: <Customer UUID>
+```
+
+This header is a trusted development-only identity input, not production Authentication or Authorization.
+
+Presentation converts the header into an `ActorContext`. Application use cases depend on `ActorContext`, not on HTTP header names or Spring MVC types.
+
+A `customerId` in a path, query, or request body identifies a target only and never proves caller identity. Application use cases validate ownership against the Acting Customer.
+
+---
+
 ### API-015 — Endpoint and Use Case Mapping Is Not Necessarily One-to-One
 
 **Status:** Confirmed

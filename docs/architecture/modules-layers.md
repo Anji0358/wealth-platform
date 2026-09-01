@@ -4,7 +4,7 @@
 
 **Status:** Confirmed
 
-The top-level code organization uses business domains:
+The top-level code organization uses six core business domains, an administration orchestration module, and narrowly scoped shared code:
 
 ```text
 customer

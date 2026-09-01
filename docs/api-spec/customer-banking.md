@@ -8,15 +8,15 @@ All paths below are relative to:
 
 ## Customer
 
-### API-CUS-001 — Register Customer
+### API-CUS-001 — Provision Customer Record
 
 ```text
-POST /customers
+POST /admin/customers
 ```
 
 **Related Use Cases**
 
-- UC-CUS-001 Register Customer
+- UC-CUS-001 Provision Customer Record
 
 **Request**
 
@@ -40,19 +40,19 @@ POST /customers
 }
 ```
 
-The initial API does not require unique email or external identity.
+This is an Administrator/System provisioning capability, not Customer self-registration. The initial API does not require unique email or external identity.
 
 ---
 
-### API-CUS-002 — View Customer Profile
+### API-CUS-002 — View Own Customer Profile
 
 ```text
-GET /customers/{customerId}
+GET /customers/me
 ```
 
 **Related Use Cases**
 
-- UC-CUS-002 View Customer Profile
+- UC-CUS-002 View Own Customer Profile
 
 **Response**
 
@@ -68,6 +68,8 @@ The response may include:
 - Securities Account identifier when one exists.
 
 It should not embed complete account transaction histories.
+
+`me` is resolved from `ActorContext`. A path or body `customerId` is not used as proof of caller identity.
 
 ---
 

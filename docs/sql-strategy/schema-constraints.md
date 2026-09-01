@@ -219,3 +219,11 @@ Start with one PostgreSQL schema.
 Domain separation is maintained through code ownership and table design rather than separate PostgreSQL schemas.
 
 Schema-level domain separation may be reconsidered later.
+
+---
+
+## SQL-SCH-019 — Acting Identity Is Not Persisted as an HTTP Concept
+
+`X-Acting-Customer-Id` and other transport metadata are not schema columns and are not authentication records.
+
+Ownership remains represented by relational keys such as `bank_account.customer_id` and `securities_account.customer_id`. Application ownership checks load these relationships using the Acting Customer carried by `ActorContext`.

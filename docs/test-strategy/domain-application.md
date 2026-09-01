@@ -173,3 +173,26 @@ Failure-case tests should verify the same no-change guarantees documented in Use
 Tests do not need names like `UC-BNK-003_BR-BNK-005_test1`.
 
 Traceability may instead be maintained through class organization, comments, or documentation.
+
+---
+
+### TS-APP-006 — ActorContext Ownership Is Tested at the Application Boundary
+
+Application tests verify that the Acting Customer can access owned resources, a different Acting Customer is rejected without state change, and a path/body target `customerId` cannot impersonate another Customer.
+
+Ownership failure creates no balance, Position, Order, Execution, or Ledger effect. Tests use `ActorContext` directly and do not model HTTP headers.
+
+---
+
+### TS-APP-007 — Disabled Security Capabilities Are Tested as a Matrix
+
+Application tests for BR-MKT-012 and BR-MKT-013 verify that DISABLED rejects a new Buy Order while allowing an eligible Sell Order, Portfolio inclusion, Order/Execution history, Market Price history, and direct Security read.
+
+### Confirmed Rule Coverage Additions
+
+| Business Rule | Primary Test Responsibility |
+| --- | --- |
+| BR-CUS-003 | Customer provisioning Application/API tests |
+| BR-CUS-004 | TS-APP-006 and TS-API-005 |
+| BR-MKT-012 | TS-APP-007 plus Buy/Sell and Portfolio tests |
+| BR-MKT-013 | TS-API-006 and Security query integration tests |

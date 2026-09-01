@@ -174,3 +174,11 @@ loadInfo
 Comments for complex SQL should explain design intent, assumptions, or trade-offs.
 
 Avoid comments that merely translate obvious SQL syntax into English.
+
+---
+
+## SQL-ACC-015 — Security Status Filtering Is Explicit
+
+The default Security-list query selects `ACTIVE` rows. An explicit, whitelisted status filter may select `DISABLED` rows.
+
+Direct Security lookup does not exclude `DISABLED` rows. Every list/direct-read projection selects Security status so existence is not confused with Buy eligibility.

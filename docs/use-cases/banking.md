@@ -40,7 +40,9 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-BNK-002 — Bank Account Initial State
+* BR-BNK-007 — Ordinary Deposit Account Behavior
+* BR-BNK-008 — Savings Account Behavior
 
 ---
 
@@ -86,9 +88,14 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-BNK-004 — Deposit Amount Must Be Positive
+* BR-BNK-009 — Frozen Bank Account Behavior
+* BR-LDG-001 — Every Cash Movement Has One Ledger Transaction
+* BR-LDG-002 — Ledger Transaction Must Be Zero-Sum
+* BR-LDG-004 — External Account Balances Deposits and Withdrawals
+* BR-LDG-007 — Ledger and Balance Changes Succeed or Fail Together
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-007
 
@@ -140,9 +147,15 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BNK-005 — Withdrawal Amount Must Be Positive and Available
+* BR-BNK-009 — Frozen Bank Account Behavior
+* BR-LDG-001 — Every Cash Movement Has One Ledger Transaction
+* BR-LDG-002 — Ledger Transaction Must Be Zero-Sum
+* BR-LDG-004 — External Account Balances Deposits and Withdrawals
+* BR-LDG-007 — Ledger and Balance Changes Succeed or Fail Together
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-007
 
@@ -167,11 +180,9 @@ Customer
 
 1. Customerが送金元口座、送金先口座、金額を指定する。
 2. システムが振替可能性を検証する。
-3. 必要に応じて資金をReserved Amountとして拘束する。
-4. 送金元Current Balanceを減少させる。
-5. 送金先Current Balanceを増加させる。
-6. 資金拘束を解放する。
-7. Ledger Transactionを記録する。
+3. 送金元Current Balanceを減少させる。
+4. 送金先Current Balanceを増加させる。
+5. Ledger Transactionを記録する。
 
 ### Postconditions
 
@@ -201,9 +212,16 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BNK-006 — Transfer Amount Must Be Positive and Available
+* BR-BNK-012 — Transfer Is Atomic
+* BR-BNK-013 — Frozen Destination May Receive Transfer
+* BR-BNK-014 — Phase 1 Synchronous Cash Movements Do Not Use Reservation
+* BR-LDG-001 — Every Cash Movement Has One Ledger Transaction
+* BR-LDG-002 — Ledger Transaction Must Be Zero-Sum
+* BR-LDG-007 — Ledger and Balance Changes Succeed or Fail Together
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-007
 * OQ-UC-008
@@ -230,10 +248,9 @@ Customer
 1. Customerが送金元、送金先、金額を指定する。
 2. システムが送金元口座の所有者を確認する。
 3. 送金可能性を検証する。
-4. 必要に応じて資金を拘束する。
-5. 送金元Current Balanceを減少させる。
-6. 送金先Current Balanceを増加させる。
-7. Ledgerへ資金移動を記録する。
+4. 送金元Current Balanceを減少させる。
+5. 送金先Current Balanceを増加させる。
+6. Ledgerへ資金移動を記録する。
 
 ### Postconditions
 
@@ -264,9 +281,16 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BNK-006 — Transfer Amount Must Be Positive and Available
+* BR-BNK-012 — Transfer Is Atomic
+* BR-BNK-013 — Frozen Destination May Receive Transfer
+* BR-BNK-014 — Phase 1 Synchronous Cash Movements Do Not Use Reservation
+* BR-LDG-001 — Every Cash Movement Has One Ledger Transaction
+* BR-LDG-002 — Ledger Transaction Must Be Zero-Sum
+* BR-LDG-007 — Ledger and Balance Changes Succeed or Fail Together
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-007
 * OQ-UC-008
@@ -314,7 +338,10 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BNK-001 — Cash Balances Must Remain Non-Negative
+* BR-BNK-009 — Frozen Bank Account Behavior
+* BR-BNK-010 — Closed Bank Account Behavior
 
 ---
 
@@ -351,14 +378,15 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-LDG-003 — Historical Ledger Facts Are Immutable
 
 ---
 
 ## UC-BNK-008 — Close Bank Account
 
 **Phase:** Phase 1 — Core Banking / MVP
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -368,6 +396,7 @@ Customer
 
 * Customerが存在すること。
 * Bank Accountが存在すること。
+* Bank AccountのAccount StatusがACTIVEであること。
 
 ### Main Flow
 
@@ -382,15 +411,21 @@ Customer
 
 ### Failure Cases
 
-* 閉鎖条件を満たさない場合
+* Current BalanceまたはReserved Amountが0ではない場合
+
+  * 閉鎖を拒否する。
+  * Account Statusを変更しない。
+* 未完了の資金移動が存在する場合
+
+  * 閉鎖を拒否する。
+  * Account Statusを変更しない。
+* Account StatusがACTIVEではない場合
 
   * 閉鎖を拒否する。
   * Account Statusを変更しない。
 
 ### Related Business Rules
 
-* TBD
-
-### Open Questions
-
-* OQ-UC-004
+* BR-BNK-003 — Bank Account Closure Conditions
+* BR-BNK-010 — Closed Bank Account Behavior
+* BR-BNK-011 — Valid Bank Account Status Transitions

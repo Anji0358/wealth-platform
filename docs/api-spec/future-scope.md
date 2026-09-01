@@ -16,6 +16,8 @@ Potential endpoint:
 POST /orders/{orderId}/cancel
 ```
 
+**Related Use Case:** UC-BRK-006 Cancel Order
+
 Related future capabilities:
 
 - Limit Orders;

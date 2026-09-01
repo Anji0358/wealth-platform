@@ -131,17 +131,14 @@ Reservation begins in later phases only for operations that remain pending meani
 
 ---
 
-## Open Questions
+## Resolved Market-Simulation Question
 
 ### OQ-BR-001 — Effective Timing of Security Parameter Changes
 
-**Status:** Open Question  
-**Decision Required Before:** finalizing `market-simulation.md`
+**Status:** Resolved
+**Resolved By:** `market-simulation.md` MS-029
 
-When Expected Return `μ` or Volatility `σ` changes, determine whether the new value applies:
-
-- immediately to the current Business Day if price generation has not yet occurred; or
-- starting from the next Business Day.
+When Expected Return `μ` or Volatility `σ` changes, the new value applies to the next Market Price that has not yet been generated.
 
 Historical Market Prices are never recalculated.
 

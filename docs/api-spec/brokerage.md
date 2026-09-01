@@ -316,6 +316,10 @@ Position rows with Quantity zero are not returned because they do not exist as c
 
 ## Future Order Cancellation
 
+**Related Use Cases**
+
+- UC-BRK-006 Cancel Order
+
 Phase 6 may introduce:
 
 ```text

@@ -79,3 +79,7 @@ SQL Experiment
 Performance
 → repeatable large-data benchmark comparison
 ```
+
+Every Confirmed Business Rule must be assigned to at least one responsibility in this map before its implementation starts. Rules protected by a database constraint retain Domain-level tests when they also represent Domain behavior.
+
+For financial operations, the Application or E2E responsibility must explicitly verify that balance, Ledger, and any Position / Order / Execution changes succeed or fail together.

@@ -42,6 +42,28 @@ Administratorは金融資産の所有者ではなく、口座状態などを管�
 
 ---
 
+## Acting Customer（操作主体Customer）
+
+### Definition
+
+現在のCustomer向けUse Caseを開始したCustomer。初期学習版ではtrusted development-only identityから特定し、Application層ではActorContextを通じて参照する。
+
+### Distinction
+
+path、query、bodyに含まれるCustomer IDは対象を指定する値であり、Acting Customerであることの証明ではない。
+
+---
+
+## ActorContext（操作主体コンテキスト）
+
+### Definition
+
+Application Use CaseへActing Customerなどの操作主体を渡す、transport-agnosticな抽象。
+
+HTTP header名やSpring MVC型をDomain/Applicationへ持ち込まないために使用する。本番Authentication / Authorizationを意味しない。
+
+---
+
 # 2. Banking Domain
 
 ## Bank Account（銀行口座）
@@ -202,13 +224,15 @@ Bank AccountとSecurities Account間の現金移動はBrokerage側のCash Transf
 
 口座が現在どのような操作を許可されているかを表す状態。
 
-Bank Accountでは初期バージョンとして以下を扱う。
+`Account Status`は口座状態を説明する一般用語であり、Bank AccountとSecurities Accountが同じ状態型または共通Accountモデルを持つことを意味しない。
+
+Bank Account Statusでは初期バージョンとして以下を扱う。
 
 * ACTIVE
 * FROZEN
 * CLOSED
 
-Securities Accountでは以下を扱う。
+Securities Account Statusでは以下を扱う。
 
 * ACTIVE
 * RESTRICTED
@@ -217,6 +241,8 @@ Securities Accountでは以下を扱う。
 ### Distinction
 
 Account StatusはAccount Typeとは異なり、口座の現在の利用可否や操作制限を表す。
+
+Bank Account StatusとSecurities Account Statusは、それぞれ異なる状態遷移と許可操作を持つ別のDomain概念として扱う。
 
 ---
 
@@ -465,6 +491,8 @@ External Accountは実際の外部銀行口座や外部金融システムとの�
 初期バージョンでは株式を対象とする。
 
 各Securityには市場価格生成に必要なパラメータを設定する。
+
+Securityは`ACTIVE`または`DISABLED`のStatusを持つ。`DISABLED`でもSecurityは存在し、個別参照、価格履歴、Portfolio表示、既存保有のSellを継続できる。禁止されるのは新規Buyである。
 
 ### Related Terms
 

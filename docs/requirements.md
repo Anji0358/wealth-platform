@@ -33,6 +33,9 @@
 * 証券口座の利用
 * 証券取引
 * 保有資産・損益・総資産の確認
+* 自身のCustomer Profileの確認
+
+Customerによる自己登録は初期スコープに含めない。Customer recordはAdministratorまたはSystemが作成する。
 
 ### 2.2 Administrator
 
@@ -43,6 +46,7 @@
 * 銀行口座の状態管理
 * 証券口座の状態管理
 * 取扱銘柄の管理
+* Customer recordの作成
 * その他、顧客自身には許可されない管理操作
 
 ### 2.3 System / Scheduler
@@ -178,7 +182,6 @@ Customerは以下の注文を行える。
 
 * 買い注文
 * 売り注文
-* 未約定注文のキャンセル
 * 注文状態の確認
 * 注文履歴の確認
 
@@ -261,6 +264,20 @@ Portfolioでは、Brokerageが管理するPosition、Marketが管理する市場
 ### 7.1 Securities
 
 取扱証券ごとに市場価格生成に必要なパラメータを設定する。
+
+Administratorは以下を行える。
+
+* Securityを登録する
+* Securityの市場価格生成パラメータを更新する
+* ACTIVE SecurityをDISABLEDに変更する
+* DISABLED SecurityをACTIVEに戻す
+
+CustomerはSecurity一覧および個別Securityを参照できる。
+
+* デフォルト一覧はACTIVE Securityだけを返す
+* status filterによりDISABLED Securityも取得できる
+* DISABLED Securityの個別参照を許可する
+* Securityの存在と新規購入可能性を別の概念として扱う
 
 初期バージョンでは以下を使用する。
 
@@ -476,6 +493,8 @@ Idempotencyを考慮する。
 * MFA
 * 本番レベルの不正アクセス検知
 
+初期学習版ではdevelopment-onlyのtrusted acting identityを使用する。これは本番Authentication / Authorizationではなく、pathまたはbodyのCustomer IDを本人性の根拠としてはならない。
+
 初期アーキテクチャはモノリスとする。
 
 詳細な技術構成についてはArchitectureおよびDevelopment Environmentの設計で定義する。
@@ -548,3 +567,4 @@ MVPでは株式売買までは実装しない。
 * 市場価格生成モデルの追加
 * 部分約定
 * 指値注文
+* 未約定注文のキャンセル

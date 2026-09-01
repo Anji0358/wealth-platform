@@ -13,7 +13,7 @@ main
 ## Current Learning Task
 
 ```text
-Not started
+Cross-document specification consistency review
 ```
 
 ## Related
@@ -21,25 +21,25 @@ Not started
 ### Use Cases
 
 ```text
-None
+UC-CUS-001, UC-CUS-002, UC-MKT-004, UC-BRK-006
 ```
 
 ### Business Rules
 
 ```text
-None
+BR-CUS-003, BR-CUS-004, BR-MKT-012, BR-MKT-013
 ```
 
 ### ADR / SQL Experiment
 
 ```text
-None
+ADR-003
 ```
 
 ## Current TDD State
 
 ```text
-NOT_STARTED
+REVIEW
 ```
 
 Allowed values:
@@ -59,11 +59,13 @@ COMPLETE
 - Project specifications and core development policies have been prepared.
 - Git workflow has been defined.
 - Learning workflow has been defined.
+- Cross-document consistency decisions DR-001 through DR-005 have been propagated from Requirements through ADR.
+- ADR-003 records the development ActorContext identity boundary.
 
 ## Changed Files
 
 ```text
-None for the current learning task.
+Documentation only; see current git diff.
 ```
 
 ## Current Implementation
@@ -89,7 +91,7 @@ No active implementation task.
 ## Review Findings
 
 ```text
-None.
+OQ-UC-003 remains deferred to Phase 6 and is the explicit Review Reason for UC-BRK-006.
 ```
 
 ## Tests
@@ -97,7 +99,7 @@ None.
 ### Passed
 
 ```text
-Not applicable.
+Documentation reference and traceability checks passed; application tests were not run because code was not changed.
 ```
 
 ### Not Yet Run
@@ -109,13 +111,13 @@ Not applicable.
 ## Open Questions
 
 ```text
-None.
+OQ-UC-003 — finalize the long-lived Order / independent Execution lifecycle before implementing UC-BRK-006.
 ```
 
 ## Next Action
 
 ```text
-Select the first implementation learning task and begin with Design Input followed by the first Red task.
+Review the documentation diff. Do not begin UC-BRK-006 until OQ-UC-003 is resolved.
 ```
 
 ## Session Resume Note

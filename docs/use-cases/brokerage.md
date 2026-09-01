@@ -36,7 +36,8 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-BRK-001 — One Securities Account per Customer Initially
+* BR-BRK-005 — Securities Account Initial State
 
 ---
 
@@ -84,9 +85,14 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BRK-008 — Bank and Securities Accounts Must Share the Same Customer
+* BR-BRK-009 — Bank-to-Securities Transfer State Requirements
+* BR-LDG-001 — Every Cash Movement Has One Ledger Transaction
+* BR-LDG-002 — Ledger Transaction Must Be Zero-Sum
+* BR-LDG-007 — Ledger and Balance Changes Succeed or Fail Together
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-007
 * OQ-UC-008
@@ -133,14 +139,19 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BRK-008 — Bank and Securities Accounts Must Share the Same Customer
+* BR-BRK-010 — Securities-to-Bank Transfer State Requirements
+* BR-LDG-001 — Every Cash Movement Has One Ledger Transaction
+* BR-LDG-002 — Ledger Transaction Must Be Zero-Sum
+* BR-LDG-007 — Ledger and Balance Changes Succeed or Fail Together
 
 ---
 
 ## UC-BRK-004 — Place Buy Order
 
 **Phase:** Phase 3 — Trading
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -158,12 +169,10 @@ Customer
 2. 最新Market Priceを取得する。
 3. 必要現金額を算出する。
 4. Available Balanceを検証する。
-5. 必要現金をReserved Amountとして拘束する。
-6. Buy Orderを作成する。
-7. 初期バージョンでは同一Use Case内で全量Executionを作成する。
-8. 現金残高へ約定結果を反映する。
-9. Positionへ取得結果を反映する。
-10. 資金拘束を解放する。
+5. Buy Orderを作成する。
+6. 同一Use Case内で全量Executionを作成する。
+7. 現金残高へ約定結果を反映する。
+8. Positionへ取得結果を反映する。
 
 ### Postconditions
 
@@ -189,9 +198,15 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BRK-011 — Phase 3 Uses Immediate Full-Fill Market Orders
+* BR-BRK-012 — Trading Requires Current Business-Day Market Price
+* BR-BRK-013 — Disabled Security Buy/Sell Behavior
+* BR-BRK-015 — Buy Order Requires Sufficient Securities Cash
+* BR-BRK-017 — Phase 3 Buy Is Atomic
+* BR-XDM-010 — Reservation Exists Only for Meaningfully Pending Operations
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-003
 
@@ -200,7 +215,7 @@ Customer
 ## UC-BRK-005 — Place Sell Order
 
 **Phase:** Phase 3 — Trading
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -244,9 +259,15 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BRK-003 — Position Quantity Must Remain Non-Negative
+* BR-BRK-011 — Phase 3 Uses Immediate Full-Fill Market Orders
+* BR-BRK-012 — Trading Requires Current Business-Day Market Price
+* BR-BRK-013 — Disabled Security Buy/Sell Behavior
+* BR-BRK-016 — Sell Order Requires Sufficient Position Quantity
+* BR-BRK-018 — Phase 3 Sell Is Atomic
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-001
 * OQ-UC-002
@@ -256,8 +277,10 @@ Customer
 
 ## UC-BRK-006 — Cancel Order
 
-**Phase:** Phase 3 — Trading
+**Phase:** Phase 6 — Advanced Learning
 **Status:** Needs Review
+
+**Review Reason:** OQ-UC-003 — long-lived Order / independent Execution lifecycle must be finalized for Phase 6.
 
 ### Actor
 
@@ -266,6 +289,7 @@ Customer
 ### Preconditions
 
 * Orderが存在すること。
+* Limit OrderまたはPartial Executionを含む、未完了Orderのライフサイクルが導入済みであること。
 
 ### Main Flow
 
@@ -291,14 +315,14 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-XDM-010 — Reservation Exists Only for Meaningfully Pending Operations
 
 ---
 
 ## UC-BRK-007 — View Orders
 
 **Phase:** Phase 3 — Trading
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -327,14 +351,15 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-BRK-011 — Phase 3 Uses Immediate Full-Fill Market Orders
+* BR-XDM-009 — Historical Facts Are Append-Oriented
 
 ---
 
 ## UC-BRK-008 — View Executions
 
 **Phase:** Phase 3 — Trading
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -362,14 +387,15 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-BRK-011 — Phase 3 Uses Immediate Full-Fill Market Orders
+* BR-XDM-009 — Historical Facts Are Append-Oriented
 
 ---
 
 ## UC-BRK-009 — View Positions
 
 **Phase:** Phase 4 — Position / Portfolio
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -398,7 +424,10 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-BRK-003 — Position Quantity Must Remain Non-Negative
+* BR-BRK-004 — Position Represents Current Holdings Only
+* BR-BRK-019 — Average Cost Is the Initial Cost Basis Method
+* BR-BRK-021 — Remaining Acquisition Cost Preserves Cost-Basis Integrity
 
 ---
 
@@ -439,14 +468,16 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-CUS-002 — Customer Ownership Controls Financial Operations
+* BR-BRK-002 — Securities Cash Must Remain Non-Negative
+* BR-BRK-006 — Restricted Securities Account Behavior
 
 ---
 
 ## UC-BRK-011 — Close Securities Account
 
 **Phase:** Phase 1 — Core Banking / MVP
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -455,6 +486,7 @@ Customer
 ### Preconditions
 
 * Securities Accountが存在すること。
+* Securities AccountのAccount StatusがACTIVEであること。
 
 ### Main Flow
 
@@ -469,15 +501,24 @@ Customer
 
 ### Failure Cases
 
-* 閉鎖条件を満たさない場合
+* Current BalanceまたはReserved Amountが0ではない場合
+
+  * 閉鎖を拒否する。
+  * Account Statusを変更しない。
+* Positionが存在する場合
+
+  * 閉鎖を拒否する。
+  * Account Statusを変更しない。
+* 未完了Orderが存在する場合
+
+  * 閉鎖を拒否する。
+  * Account Statusを変更しない。
+* Account StatusがACTIVEではない場合
 
   * 閉鎖を拒否する。
   * Account Statusを変更しない。
 
 ### Related Business Rules
 
-* TBD
-
-### Open Questions
-
-* OQ-UC-005
+* BR-BRK-006 — Restricted Securities Account Behavior
+* BR-BRK-007 — Securities Account Closure Conditions

@@ -193,6 +193,8 @@ The implementation should not collapse both categories into one generic validati
 
 Because production authentication/authorization is outside initial scope, ownership mismatch is initially represented as a domain/application error.
 
+The Acting Customer comes from `ActorContext`, populated by the trusted development-only identity boundary. Target IDs supplied through paths or request bodies do not establish ownership.
+
 When authentication is introduced later, some ownership failures may become HTTP authorization semantics such as `403 Forbidden`.
 
 This future change should be handled deliberately rather than simulated prematurely.

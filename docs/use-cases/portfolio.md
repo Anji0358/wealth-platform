@@ -7,7 +7,7 @@ Customerが保有する金融資産全体の評価および損益確認に関す
 ## UC-PFL-001 — View Portfolio Overview
 
 **Phase:** Phase 4 — Position / Portfolio
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -41,14 +41,18 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-PFL-001 — Portfolio Uses Latest Persisted Market Price
+* BR-PFL-002 — Security Without Market Price Is Not Artificially Valued
+* BR-PFL-003 — Position Valuation Uses Total Owned Quantity
+* BR-PFL-006 — Total Assets Include Owned Reserved Assets
+* BR-PFL-007 — Total Assets Definition
 
 ---
 
 ## UC-PFL-002 — View Profit and Loss
 
 **Phase:** Phase 4 — Position / Portfolio
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -80,8 +84,12 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-BRK-019 — Average Cost Is the Initial Cost Basis Method
+* BR-BRK-021 — Remaining Acquisition Cost Preserves Cost-Basis Integrity
+* BR-BRK-022 — Partial Sale Uses Average Cost Allocation
+* BR-PFL-004 — Unrealized Profit and Loss
+* BR-PFL-005 — Realized Profit and Loss
 
-### Open Questions
+### Related Decisions
 
 * OQ-UC-001

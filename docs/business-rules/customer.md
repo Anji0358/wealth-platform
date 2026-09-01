@@ -21,8 +21,8 @@ Authentication, KYC, and identity verification are outside the initial scope. In
 
 #### Related Use Cases
 
-- UC-CUS-001 Register Customer
-- UC-CUS-002 View Customer Profile
+- UC-CUS-001 Provision Customer Record
+- UC-CUS-002 View Own Customer Profile
 
 ---
 
@@ -55,6 +55,45 @@ If ownership validation fails:
 - UC-BRK-003 Transfer Cash to Bank
 - UC-BRK-004 Place Buy Order
 - UC-BRK-005 Place Sell Order
+
+---
+
+### BR-CUS-003 — Customer Record Is Provisioned by Administrator or System
+
+**Status:** Confirmed
+**Phase:** Phase 1
+
+#### Rule
+
+Customer self-registration is not part of the current scope.
+
+A Customer record is created only through the Administrator or System provisioning use case. Provisioning creates an internal Customer identity; it does not perform production-grade identity verification, KYC, Authentication, or Authorization.
+
+#### Related Use Cases
+
+- UC-CUS-001 Provision Customer Record
+
+---
+
+### BR-CUS-004 — Acting Customer Identity Is Trusted but Transport-Agnostic
+
+**Status:** Confirmed
+**Phase:** Phase 1 learning environment
+
+#### Rule
+
+Customer-initiated use cases receive the Acting Customer through an `ActorContext` abstraction.
+
+The learning environment may obtain this identity from a trusted development-only input such as `X-Acting-Customer-Id`, but Application and Domain code must not depend on an HTTP header.
+
+A `customerId` supplied in a path, query, or request body identifies a target resource only. It is not evidence that the caller is that Customer.
+
+The Application layer must validate ownership before returning Customer-private information or changing Customer-owned state.
+
+#### Related Use Cases
+
+- UC-CUS-002 View Own Customer Profile
+- all Customer-initiated Banking, Brokerage, and Portfolio use cases
 
 ## Future Considerations
 

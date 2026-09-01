@@ -169,10 +169,11 @@ List relevant requirements, architecture, test, SQL, or other ADR documents.
 | --- | --- | --- |
 | ADR-001 | Use a Modular Monolith | Accepted |
 | ADR-002 | Separate Domain Models from Persistence Models | Accepted |
+| ADR-003 | Use a Development Actor Context for Customer Identity | Accepted |
 
 ## Planned ADRs
 
-No additional ADR is currently required.
+No additional ADR is currently required beyond the Accepted ADRs listed above.
 
 In particular, the concurrency-control strategy is intentionally **not decided yet**.
 

@@ -7,7 +7,7 @@ SecurityのMarket Price生成およびMarket Price参照に関するUse Caseを�
 ## UC-MKT-001 — Generate Daily Market Prices
 
 **Phase:** Phase 2 — Market
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -46,14 +46,18 @@ System / Scheduler
 
 ### Related Business Rules
 
-* TBD
+* BR-MKT-005 — One Market Price per Security per Business Day
+* BR-MKT-006 — Daily Price Generation Is Idempotent
+* BR-MKT-008 — Disabled Securities Continue Market Price Generation
+* BR-MKT-009 — Business Day Is Monday Through Friday Initially
+* BR-MKT-010 — GBM Calculation and Official Market Price Are Separate Concepts
 
 ---
 
 ## UC-MKT-002 — View Latest Market Prices
 
 **Phase:** Phase 2 — Market
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -83,14 +87,15 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-MKT-007 — Market Price History Is Immutable
+* BR-MKT-011 — Market Reads Never Generate New Random Prices
 
 ---
 
 ## UC-MKT-003 — View Market Price History
 
 **Phase:** Phase 2 — Market
-**Status:** Needs Review
+**Status:** Confirmed
 
 ### Actor
 
@@ -119,4 +124,53 @@ Customer
 
 ### Related Business Rules
 
-* TBD
+* BR-MKT-005 — One Market Price per Security per Business Day
+* BR-MKT-007 — Market Price History Is Immutable
+* BR-MKT-011 — Market Reads Never Generate New Random Prices
+
+---
+
+## UC-MKT-004 — List Securities
+
+**Phase:** Phase 2 — Market
+**Status:** Confirmed
+
+### Actor
+
+Customer
+
+### Preconditions
+
+* なし。
+
+### Main Flow
+
+1. Customerが任意でSecurity Status filterを指定する。
+2. filter未指定の場合はACTIVE Securityを取得する。
+3. `ACTIVE`または`DISABLED`が指定された場合は、そのStatusのSecurityを取得する。
+4. Security ID、Security Code、name、statusを含む一覧を返す。
+
+### Alternative Flow — View One Security
+
+1. CustomerがSecurity IDを指定する。
+2. Statusにかかわらず、存在するSecurityを取得する。
+3. Security ID、Security Code、name、statusを返す。
+
+### Postconditions
+
+* Securityの存在とStatusを確認できる。
+* 一覧への掲載自体を新規BUY可能性の保証として扱わない。
+* DISABLED Securityも個別参照できる。
+* システム状態を変更しない。
+
+### Failure Cases
+
+* 未知のStatus filterが指定された場合
+
+  * 入力エラーとして拒否する。
+
+### Related Business Rules
+
+* BR-MKT-003 — Security Is Never Physically Deleted in Normal Operation
+* BR-MKT-012 — Security Existence and Buy Eligibility Are Separate
+* BR-MKT-013 — Security Listing and Direct Read Include Status

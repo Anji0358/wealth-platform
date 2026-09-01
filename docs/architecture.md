@@ -30,6 +30,7 @@ The project intentionally avoids microservices, Event Sourcing, full CQRS infras
 8. **No premature Event Bus / Microservices / Generic Framework**
 9. **Design patterns introduced when real variation or complexity appears**
 10. **Architecture rules remain testable and traceable**
+11. **Development acting identity enters through a transport-agnostic ActorContext**
 
 ## Documents
 
@@ -80,3 +81,5 @@ Implementation
 ↓
 Test
 ```
+
+Accepted architectural rationale is recorded in ADR-001, ADR-002, and ADR-003 under `adr/`.

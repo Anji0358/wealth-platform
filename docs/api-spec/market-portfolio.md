@@ -14,6 +14,17 @@ All paths below are relative to:
 GET /securities
 ```
 
+**Related Use Cases**
+
+- UC-MKT-004 List Securities
+
+Without a filter, the endpoint returns `ACTIVE` Securities. Supported filtering is:
+
+```text
+GET /securities?status=ACTIVE
+GET /securities?status=DISABLED
+```
+
 Returns public/read-oriented Security information such as:
 
 - Security ID;
@@ -22,6 +33,22 @@ Returns public/read-oriented Security information such as:
 - status.
 
 The initial endpoint may use pagination if the dataset grows, though the initial Security count is expected to be modest.
+
+Listing a Security means that the Security exists; it does not by itself guarantee that a new Buy Order is allowed.
+
+---
+
+### API-MKT-005 — View Security
+
+```text
+GET /securities/{securityId}
+```
+
+**Related Use Cases**
+
+- UC-MKT-004 List Securities
+
+Direct read is available for both `ACTIVE` and `DISABLED` Securities. The response includes at least Security ID, Security Code, name, and status.
 
 ---
 
@@ -97,7 +124,7 @@ A manual administrative trigger may be introduced later only if an actual operat
 ### API-PFL-001 — View Portfolio Overview
 
 ```text
-GET /customers/{customerId}/portfolio
+GET /customers/me/portfolio
 ```
 
 **Related Use Cases**
@@ -137,7 +164,7 @@ Exact field grouping may evolve during implementation while preserving the under
 ### API-PFL-002 — View Profit and Loss
 
 ```text
-GET /customers/{customerId}/portfolio/profit-loss
+GET /customers/me/portfolio/profit-loss
 ```
 
 **Related Use Cases**

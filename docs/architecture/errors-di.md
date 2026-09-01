@@ -151,3 +151,23 @@ private Money currentBalance;
 ```
 
 inside Services.
+
+---
+
+## ARCH-065 — Acting Identity Is Exposed Through ActorContext
+
+**Status:** Confirmed
+
+Presentation resolves the trusted development-only identity input and passes a transport-agnostic `ActorContext` to the Application use case. Application and Domain code must not depend on HTTP header names, `HttpServletRequest`, Spring Security types, or Controller DTOs.
+
+`ActorContext` expresses the Acting Customer required by the use case; it does not claim production-grade authentication.
+
+---
+
+## ARCH-066 — Application Layer Enforces Ownership
+
+**Status:** Confirmed
+
+The Application use case compares the Acting Customer from `ActorContext` with persisted resource ownership before returning private Customer data or changing Customer-owned state.
+
+Path, query, and body identifiers select target resources only. Presentation validation alone must not authorize the operation.
