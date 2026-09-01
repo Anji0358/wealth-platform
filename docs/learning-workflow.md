@@ -191,6 +191,10 @@ TDD should be experienced as a sequence, not merely described.
 
 AI gives exactly one active implementation task at a time.
 
+Each task must have one production implementation target: one class, interface, or method with one clear responsibility. A task must not require the developer to introduce multiple production types merely to make it possible to complete the task.
+
+When a later behavior needs a missing port or boundary type, introduce that type in its own small task first. A trivial declaration without behavior does not require artificial TDD; apply Red → Green → Refactor when behavior is being added.
+
 Do not issue:
 
 ```text
