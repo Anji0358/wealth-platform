@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: wealth-postgres
+    environment:
+      POSTGRES_DB: wealth
+      POSTGRES_USER: wealth
+      POSTGRES_PASSWORD: wealth
+    ports:
+      - "5432:5432"
+    volumes:
+      - wealth-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  wealth-postgres-data:
