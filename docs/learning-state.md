@@ -7,13 +7,13 @@
 ## Current Branch
 
 ```text
-main
+feature/customer-domain-model
 ```
 
 ## Current Learning Task
 
 ```text
-Cross-document specification consistency review
+UC-CUS-001 — Provision Customer Record
 ```
 
 ## Related
@@ -21,25 +21,25 @@ Cross-document specification consistency review
 ### Use Cases
 
 ```text
-UC-CUS-001, UC-CUS-002, UC-MKT-004, UC-BRK-006
+UC-CUS-001
 ```
 
 ### Business Rules
 
 ```text
-BR-CUS-003, BR-CUS-004, BR-MKT-012, BR-MKT-013
+BR-CUS-001, BR-CUS-003
 ```
 
 ### ADR / SQL Experiment
 
 ```text
-ADR-003
+None
 ```
 
 ## Current TDD State
 
 ```text
-REVIEW
+COMPLETE
 ```
 
 Allowed values:
@@ -56,42 +56,36 @@ COMPLETE
 
 ## Completed
 
-- Project specifications and core development policies have been prepared.
-- Git workflow has been defined.
-- Learning workflow has been defined.
-- Cross-document consistency decisions DR-001 through DR-005 have been propagated from Requirements through ADR.
-- ADR-003 records the development ActorContext identity boundary.
+- Customer Domain Model was introduced as a pure Java class.
+- Customer retains its internal UUID, name, and creation time.
+- Customer unit test verifies the initial model attributes.
 
 ## Changed Files
 
 ```text
-Documentation only; see current git diff.
+src/main/java/com/example/wealth_platform/customer/domain/Customer.java
+src/test/java/com/example/wealth_platform/customer/domain/CustomerTest.java
 ```
 
 ## Current Implementation
 
 ```text
-No active implementation task.
+Customer Domain Model only; Customer provisioning Use Case is not implemented.
 ```
 
 ## Decisions / Reasons
 
-- Design learning is primarily input-oriented.
-- AI should explain the design choice, reason, decision criterion, and realistic alternatives.
-- Implementation learning is primarily output-oriented through TDD.
-- AI gives one Red / Green / Refactor task at a time.
-- Design patterns are introduced only after a normal implementation exposes a concrete design pressure.
-- Naming refactoring is evaluated from the perspective of readability and Domain meaning.
+- Customer is a pure Java Domain Model without Spring or persistence dependencies.
+- Customer identity uses UUID, with name and createdAt as the minimal conceptual attributes from DM-003.
 
 ## Alternatives Considered
 
-- Requiring the developer to design every component from zero was rejected because it creates excessive cognitive load while learning Java, Spring, TDD, SQL, and DDD simultaneously.
-- Introducing design patterns before experiencing the original design problem was rejected because it hides the motivation for the pattern.
+- Application Use Case, repository, ID generation, and Clock were deferred so that the first behavior remained a small Domain Model exercise.
 
 ## Review Findings
 
 ```text
-OQ-UC-003 remains deferred to Phase 6 and is the explicit Review Reason for UC-BRK-006.
+No Must Fix or Should Fix findings.
 ```
 
 ## Tests
@@ -99,25 +93,25 @@ OQ-UC-003 remains deferred to Phase 6 and is the explicit Review Reason for UC-B
 ### Passed
 
 ```text
-Documentation reference and traceability checks passed; application tests were not run because code was not changed.
+./mvnw -Dtest=CustomerTest test
 ```
 
 ### Not Yet Run
 
 ```text
-Not applicable.
+./mvnw test fails because PostgreSQL is not listening on localhost:5432; CustomerTest itself passes.
 ```
 
 ## Open Questions
 
 ```text
-OQ-UC-003 — finalize the long-lived Order / independent Execution lifecycle before implementing UC-BRK-006.
+Customer name validation rules are not yet specified; do not introduce validation until the specification is clarified.
 ```
 
 ## Next Action
 
 ```text
-Review the documentation diff. Do not begin UC-BRK-006 until OQ-UC-003 is resolved.
+Begin UC-CUS-001 Application Use Case with a small Red test for saving a provisioned Customer.
 ```
 
 ## Session Resume Note
