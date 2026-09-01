@@ -61,6 +61,7 @@ COMPLETE
 - Customer unit test verifies the initial model attributes.
 - CustomerRepository was introduced as the Domain-side save port.
 - CustomerIdGenerator was introduced as the Application-side ID generation port.
+- ProvisionCustomerUseCase creates a Customer and saves it through CustomerRepository.
 
 ## Changed Files
 
@@ -68,13 +69,15 @@ COMPLETE
 src/main/java/com/example/wealth_platform/customer/domain/Customer.java
 src/main/java/com/example/wealth_platform/customer/domain/CustomerRepository.java
 src/main/java/com/example/wealth_platform/customer/application/CustomerIdGenerator.java
+src/main/java/com/example/wealth_platform/customer/application/ProvisionCustomerUseCase.java
 src/test/java/com/example/wealth_platform/customer/domain/CustomerTest.java
+src/test/java/com/example/wealth_platform/customer/application/ProvisionCustomerUseCaseTest.java
 ```
 
 ## Current Implementation
 
 ```text
-Customer Domain Model, CustomerRepository port, and CustomerIdGenerator port; Customer provisioning Use Case is not implemented.
+Customer Domain Model, save/ID-generation ports, and a Customer provisioning Use Case that saves a Customer once.
 ```
 
 ## Decisions / Reasons
@@ -83,6 +86,7 @@ Customer Domain Model, CustomerRepository port, and CustomerIdGenerator port; Cu
 - Customer identity uses UUID, with name and createdAt as the minimal conceptual attributes from DM-003.
 - CustomerRepository is a Domain-side port with a single save operation; infrastructure will implement it later.
 - CustomerIdGenerator is an Application-side port so provisioning tests can use deterministic IDs.
+- ProvisionCustomerUseCase receives its dependencies through its constructor and uses an injected Clock.
 
 ## Alternatives Considered
 
@@ -117,7 +121,7 @@ Customer name validation rules are not yet specified; do not introduce validatio
 ## Next Action
 
 ```text
-Begin UC-CUS-001 Application Use Case with a small Red test for saving a provisioned Customer.
+Add the next small verification for the Customer saved by ProvisionCustomerUseCase.
 ```
 
 ## Session Resume Note
