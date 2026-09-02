@@ -13,7 +13,7 @@ feature/customer-domain-model
 ## Current Learning Task
 
 ```text
-UC-CUS-001 — Provision Customer Record
+UC-CUS-002 — View Own Customer Profile
 ```
 
 ## Related
@@ -21,13 +21,13 @@ UC-CUS-001 — Provision Customer Record
 ### Use Cases
 
 ```text
-UC-CUS-001
+UC-CUS-002
 ```
 
 ### Business Rules
 
 ```text
-BR-CUS-001, BR-CUS-003
+BR-CUS-001, BR-CUS-004
 ```
 
 ### ADR / SQL Experiment
@@ -62,40 +62,32 @@ COMPLETE
 - CustomerRepository was introduced as the Domain-side save port.
 - CustomerIdGenerator was introduced as the Application-side ID generation port.
 - ProvisionCustomerUseCase creates a Customer and saves it through CustomerRepository.
+- ProvisionCustomerUseCaseTest verifies the attributes of the Customer passed to CustomerRepository.
 
 ## Changed Files
 
 ```text
-src/main/java/com/example/wealth_platform/customer/domain/Customer.java
-src/main/java/com/example/wealth_platform/customer/domain/CustomerRepository.java
-src/main/java/com/example/wealth_platform/customer/application/CustomerIdGenerator.java
-src/main/java/com/example/wealth_platform/customer/application/ProvisionCustomerUseCase.java
-src/test/java/com/example/wealth_platform/customer/domain/CustomerTest.java
 src/test/java/com/example/wealth_platform/customer/application/ProvisionCustomerUseCaseTest.java
 ```
 
 ## Current Implementation
 
 ```text
-Customer Domain Model, save/ID-generation ports, and a Customer provisioning Use Case that saves a Customer once.
+Customer provisioning behavior is verified. The next use case is viewing the acting Customer's profile.
 ```
 
 ## Decisions / Reasons
 
-- Customer is a pure Java Domain Model without Spring or persistence dependencies.
-- Customer identity uses UUID, with name and createdAt as the minimal conceptual attributes from DM-003.
-- CustomerRepository is a Domain-side port with a single save operation; infrastructure will implement it later.
-- CustomerIdGenerator is an Application-side port so provisioning tests can use deterministic IDs.
-- ProvisionCustomerUseCase receives its dependencies through its constructor and uses an injected Clock.
+- The provisioning test double records the saved Customer as well as its save count, proving both the repository interaction and the saved attributes.
 
 ## Alternatives Considered
 
-- Application Use Case, repository, ID generation, and Clock were deferred so that the first behavior remained a small Domain Model exercise.
+- None yet for UC-CUS-002.
 
 ## Review Findings
 
 ```text
-No Must Fix or Should Fix findings.
+No Must Fix or Should Fix findings for the completed UC-CUS-001 test verification.
 ```
 
 ## Tests
@@ -103,25 +95,25 @@ No Must Fix or Should Fix findings.
 ### Passed
 
 ```text
-./mvnw -Dtest=CustomerTest test
+./mvnw -Dtest=ProvisionCustomerUseCaseTest test
 ```
 
 ### Not Yet Run
 
 ```text
-./mvnw test fails because PostgreSQL is not listening on localhost:5432; CustomerTest itself passes.
+./mvnw test has not been rerun; it previously required PostgreSQL on localhost:5432.
 ```
 
 ## Open Questions
 
 ```text
-Customer name validation rules are not yet specified; do not introduce validation until the specification is clarified.
+Profile representation and the missing-Customer result type must be decided while starting UC-CUS-002.
 ```
 
 ## Next Action
 
 ```text
-Add the next small verification for the Customer saved by ProvisionCustomerUseCase.
+Introduce an Application-side ActorContext port for the acting Customer identity, then start the first UC-CUS-002 Red test.
 ```
 
 ## Session Resume Note

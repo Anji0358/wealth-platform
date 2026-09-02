@@ -18,14 +18,19 @@ public class ProvisionCustomerUseCaseTest {
 			implements CustomerRepository {
 
 		private int saveCount;
+		private Customer savedCustomer;
 
 		@Override
 		public void save(Customer customer) {
+			this.savedCustomer=customer;
 			saveCount++;
 		}
 
 		int saveCount() {
 			return saveCount;
+		}
+		public Customer getCustomer() {
+			return savedCustomer;
 		}
 	}
 
@@ -46,10 +51,13 @@ public class ProvisionCustomerUseCaseTest {
 			        customerIdGenerator,
 			        clock
 			    );
-
 		useCase.provision(customerName);
 
 		assertEquals(1, customerRepository.saveCount());
+
+		assertEquals(fixedId,customerRepository.getCustomer().getId());
+		assertEquals(customerName,customerRepository.getCustomer().getName());
+		assertEquals(fixedInstant,customerRepository.getCustomer().getCreatedAt());
 	}
 
 }
