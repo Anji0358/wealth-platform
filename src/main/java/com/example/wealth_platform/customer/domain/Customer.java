@@ -30,4 +30,5 @@ public class Customer {
 	public Instant getCreatedAt() {
 		return createdAt;
 	}
+
 }

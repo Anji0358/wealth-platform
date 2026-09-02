@@ -39,7 +39,7 @@ None
 ## Current TDD State
 
 ```text
-NOT_STARTED
+GREEN
 ```
 
 Allowed values:
@@ -63,31 +63,39 @@ COMPLETE
 - CustomerIdGenerator was introduced as the Application-side ID generation port.
 - ProvisionCustomerUseCase creates a Customer and saves it through CustomerRepository.
 - ProvisionCustomerUseCaseTest verifies the attributes of the Customer passed to CustomerRepository.
+- ViewOwnCustomerProfileUseCase returns the Acting Customer's basic information through ActorContext and CustomerRepository.
+- ViewOwnCustomerProfileUseCase throws NoSuchElementException when the Acting Customer does not exist.
 
 ## Changed Files
 
 ```text
+src/main/java/com/example/wealth_platform/customer/application/ActorContext.java
+src/main/java/com/example/wealth_platform/customer/application/ViewOwnCustomerProfileUseCase.java
+src/main/java/com/example/wealth_platform/customer/domain/CustomerRepository.java
 src/test/java/com/example/wealth_platform/customer/application/ProvisionCustomerUseCaseTest.java
+src/test/java/com/example/wealth_platform/customer/application/ViewOwnCustomerProfileUseCaseTest.java
 ```
 
 ## Current Implementation
 
 ```text
-Customer provisioning behavior is verified. The next use case is viewing the acting Customer's profile.
+Customer provisioning and the basic Customer portion of profile viewing are verified. Bank Account identifiers and Securities Account presence are not implemented yet.
 ```
 
 ## Decisions / Reasons
 
-- The provisioning test double records the saved Customer as well as its save count, proving both the repository interaction and the saved attributes.
+- ActorContext is an Application-side port for the acting Customer identity, so Application code remains independent of HTTP and authentication transport.
+- CustomerRepository returns Optional<Customer> from findById; ViewOwnCustomerProfileUseCase currently maps an absent Acting Customer to NoSuchElementException.
+- Small handwritten test doubles isolate ActorContext and CustomerRepository while keeping the Application behavior visible.
 
 ## Alternatives Considered
 
-- None yet for UC-CUS-002.
+- A database or mocking framework is not used because the current tests focus solely on Application behavior.
 
 ## Review Findings
 
 ```text
-No Must Fix or Should Fix findings for the completed UC-CUS-001 test verification.
+No outstanding Must Fix or Should Fix findings for the completed basic Customer-profile behavior.
 ```
 
 ## Tests
@@ -96,24 +104,25 @@ No Must Fix or Should Fix findings for the completed UC-CUS-001 test verificatio
 
 ```text
 ./mvnw -Dtest=ProvisionCustomerUseCaseTest test
+./mvnw -Dtest=ViewOwnCustomerProfileUseCaseTest test
 ```
 
 ### Not Yet Run
 
 ```text
-./mvnw test has not been rerun; it previously required PostgreSQL on localhost:5432.
+./mvnw test: Customer-related tests pass; WealthPlatformApplicationTests.contextLoads fails because PostgreSQL is unavailable.
 ```
 
 ## Open Questions
 
 ```text
-Profile representation and the missing-Customer result type must be decided while starting UC-CUS-002.
+The API-level representation and HTTP mapping of a missing Customer are not decided.
 ```
 
 ## Next Action
 
 ```text
-Introduce an Application-side ActorContext port for the acting Customer identity, then start the first UC-CUS-002 Red test.
+Inspect the Account-related specifications and existing model before selecting the smallest untested UC-CUS-002 behavior.
 ```
 
 ## Session Resume Note

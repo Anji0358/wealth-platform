@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,15 @@ public class ProvisionCustomerUseCaseTest {
 		int saveCount() {
 			return saveCount;
 		}
+
 		public Customer getCustomer() {
 			return savedCustomer;
+		}
+
+		@Override
+		public Optional<Customer> findById(UUID customerId){
+			return Optional.empty();
+
 		}
 	}
 
