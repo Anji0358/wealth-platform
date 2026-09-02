@@ -21,9 +21,9 @@ In Java, Red may contain two stages:
 ```text
 Compiler Red
 ↓
-Minimum missing type or signature
+Minimum cohesive compile-enabling slice
 ↓
-Behavioral Red
+Behavioral Red, unless the minimal slice is already Green
 ↓
 Minimum behavior implementation
 ↓
@@ -32,7 +32,7 @@ Green
 
 `Compiler Red` is valid when the current test does not compile because a required production class, constructor, method, or interface signature does not exist yet.
 
-Only the minimum declaration required for compilation may be added at this stage. Do not implement the business behavior until the test reaches `Behavioral Red`.
+At this stage, add the smallest cohesive slice required for compilation: the missing declaration and, when necessary, directly required fields and a trivial method body. Do not add behavior beyond the current test. If this makes the test Green, it is a valid Green outcome.
 
 An unrelated compilation, configuration, or environment failure is not an acceptable Red.
 
@@ -169,7 +169,7 @@ Do not combine many unrelated rules into one oversized test unless the test is e
 One task must perform only one of the following:
 
 - write one test for one behavior;
-- add only the type or signature required to make the current test compile;
+- add the cohesive compile-enabling slice required by the current test, including a type, required fields, and a trivial method body when necessary;
 - make one currently failing test Green with the minimum implementation;
 - perform one justified refactoring while preserving behavior.
 

@@ -80,9 +80,9 @@ Red Task
 ↓
 Compiler Red if a required type or signature is missing
 ↓
-Minimum compile-enabling declaration
+Minimum cohesive compile-enabling slice
 ↓
-Behavioral Red
+Behavioral Red, unless the minimal slice is already Green
 ↓
 Minimum Green implementation
 ↓
@@ -194,7 +194,7 @@ AI gives exactly one active implementation task at a time.
 Each task must be one of the following TDD micro-steps:
 
 - write one test for one behavior;
-- add only the type or signature required to make the current test compile;
+- add the cohesive compile-enabling slice required by the current test, including a type, required fields, and a trivial method body when necessary;
 - make one currently failing test pass with the minimum production change;
 - perform one justified refactoring while preserving behavior.
 
@@ -222,7 +222,7 @@ Add it only when its necessity is observable from:
 - a concrete review finding;
 - or the current behavior selected from the specification.
 
-A declaration with no behavior does not need an artificial unit test. If the current test cannot compile without a missing type or signature, add only that declaration as its own micro-task and do not implement business logic yet.
+A declaration with no behavior does not need an artificial unit test. If the current test cannot compile, add the smallest cohesive slice needed by that test: the missing type or signature and, when necessary, its directly required fields and trivial method body. Do not add behavior beyond the current test.
 
 When a boundary or Test Double becomes necessary, introduce only what the current test requires. The detailed policy is defined in `docs/test-strategy.md`.
 
@@ -285,12 +285,12 @@ Java TDD may pass through two Red states:
 ```text
 Compiler Red
 ↓
-Minimum missing type or signature
+Minimum cohesive compile-enabling slice
 ↓
-Behavioral Red
+Behavioral Red, unless the minimal slice is already Green
 ```
 
-`Compiler Red` is valid when the test cannot compile because a production type or signature does not exist yet. The next task adds only what is required for compilation. It does not implement the behavior being tested.
+`Compiler Red` is valid when the test cannot compile because a production type or signature does not exist yet. The next task adds the smallest cohesive slice required for compilation: the type or signature and, when necessary, directly required fields and a trivial method body. It does not add behavior beyond the current test. This slice may make the test Green when the behavior is inherently simple.
 
 `Behavioral Red` means the test compiles and fails because the intended behavior is absent or incorrect.
 
@@ -493,7 +493,7 @@ Current name → Recommended name
 Reason: <how the replacement makes intent or responsibility clearer>
 ```
 
-Do not ask the developer to devise a replacement name as a separate task. The following Refactor task may ask the developer to apply the reviewed names while preserving behavior.
+Do not ask the developer to devise a replacement name as a separate task. The developer applies the reviewed names immediately; do not create a separate Refactor task solely for naming changes.
 
 ---
 

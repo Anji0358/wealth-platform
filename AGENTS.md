@@ -76,7 +76,7 @@ Do not provide Red, Green, and Refactor tasks together.
 Each task must be limited to one TDD micro-step:
 
 - write one test;
-- add only the type or signature required to make the current test compile;
+- add the cohesive compile-enabling slice required by the current test, including a type, required fields, and a trivial method body when necessary;
 - make one currently failing test pass with the minimum implementation;
 - or perform one justified refactoring while keeping behavior unchanged.
 
@@ -100,7 +100,7 @@ Ask the developer to create a specific failing test and confirm that it fails fo
 
 A test that does not yet compile is `Compiler Red`. Treat it as a valid intermediate state.
 
-When the current test cannot compile, the next task may add only the minimum missing type, constructor, method, or interface signature. Do not implement business behavior in that task. Continue until the test reaches an observable assertion failure, `Behavioral Red`.
+When the current test cannot compile, the next task may add the minimum cohesive compile-enabling slice: a missing type, constructor, method or interface signature, plus required fields and a trivial method body. Do not add behavior beyond the current test. If that minimal slice makes the test Green, treat it as Green; otherwise continue until `Behavioral Red`.
 
 ### Green
 
@@ -170,7 +170,7 @@ Review class, method, field, variable, parameter, test-method, and package names
 
 Do not rename mechanically for style alone.
 
-When a naming change is justified, provide the specific recommended replacement in the review as `current name → proposed name`, with a concise readability reason. Do not ask the developer to invent the replacement name as a separate task. The subsequent task may ask the developer to apply the reviewed replacement while keeping behavior unchanged.
+When a naming change is justified, provide the specific recommended replacement in the review as `current name → proposed name`, with a concise readability reason. Do not ask the developer to invent the replacement name as a separate task. The developer applies the reviewed replacement immediately; do not issue naming changes as a separate TDD task.
 
 After reviewing submitted code, explain the next-step decision using concise, observable evidence:
 

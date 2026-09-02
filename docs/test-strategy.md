@@ -42,15 +42,15 @@ Java TDD may move through:
 
 ```text
 Compiler Red
-→ minimum missing type or signature
-→ Behavioral Red
+→ minimum cohesive compile-enabling slice
+→ Behavioral Red, or Green when that slice already satisfies the test
 → minimum implementation
 → Green
 ```
 
 `Compiler Red` means that the current test does not compile because a required class, constructor, method, or interface signature is missing.
 
-The compile-enabling change must contain only the minimum declaration needed by the current test. It must not also implement the business behavior.
+The compile-enabling change may contain the smallest cohesive slice needed by the current test: the missing declaration and, when necessary, directly required fields and a trivial method body. It must not add behavior beyond the current test. If this makes the test Green, it is a valid Green outcome.
 
 `Behavioral Red` means that the test compiles and fails because the behavior is absent or incorrect.
 
