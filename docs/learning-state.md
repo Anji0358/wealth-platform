@@ -39,7 +39,7 @@ None
 ## Current TDD State
 
 ```text
-COMPLETE
+NOT_STARTED
 ```
 
 Allowed values:
