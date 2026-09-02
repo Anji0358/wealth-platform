@@ -74,23 +74,23 @@ Design Input
 ↓
 Optional Understanding Check
 ↓
+Select One Untested Behavior
+↓
 Red Task
 ↓
-Red Review
+Compiler Red if a required type or signature is missing
 ↓
-Green Task
+Minimum compile-enabling declaration
 ↓
-Green Review
+Behavioral Red
 ↓
-Normal Refactor if justified
+Minimum Green implementation
 ↓
-TDD Cycle Complete
+Observe the current code
 ↓
-Pattern Refactor if justified
-↓
-Before / After Review
-↓
-Next Red
+Concrete refactoring pressure?
+├─ Yes: perform one Refactor, confirm Green, and observe again
+└─ No: return to the specification and select the next behavior
 ```
 
 The AI must not collapse these stages into one large task.
@@ -191,68 +191,112 @@ TDD should be experienced as a sequence, not merely described.
 
 AI gives exactly one active implementation task at a time.
 
-Each task must have one production implementation target: one class, interface, or method with one clear responsibility. A task must not require the developer to introduce multiple production types merely to make it possible to complete the task.
+Each task must be one of the following TDD micro-steps:
 
-When a later behavior needs a missing port or boundary type, introduce that type in its own small task first. A trivial declaration without behavior does not require artificial TDD; apply Red → Green → Refactor when behavior is being added.
+- write one test for one behavior;
+- add only the type or signature required to make the current test compile;
+- make one currently failing test pass with the minimum production change;
+- perform one justified refactoring while preserving behavior.
 
-Do not issue:
+Do not combine:
 
 ```text
-Write the test,
-implement it,
-and refactor it.
+multiple test cases
+test code and production behavior
+interface definition and its production implementation
+multiple new dependencies
+multiple Red / Green / Refactor phases
+completion of an entire Use Case
 ```
 
-in one instruction.
+Prefer one target file per task. Use multiple files only when the current micro-step cannot be completed otherwise, and keep the set minimal.
 
-Instead:
+### Test-Driven Design
+
+Do not add a production class, interface, method, Test Double, or other abstraction because it may become useful later.
+
+Add it only when its necessity is observable from:
+
+- the current test;
+- the current implementation;
+- a concrete review finding;
+- or the current behavior selected from the specification.
+
+A declaration with no behavior does not need an artificial unit test. If the current test cannot compile without a missing type or signature, add only that declaration as its own micro-task and do not implement business logic yet.
+
+When a boundary or Test Double becomes necessary, introduce only what the current test requires. The detailed policy is defined in `docs/test-strategy.md`.
+
+The interaction remains:
 
 ```text
-Red Task
+One Micro-Task
 ↓
 Developer completion
 ↓
 Review
 ↓
-Green Task
-↓
-Developer completion
-↓
-Review
-↓
-Refactor Task if required
+One Next Micro-Task
 ```
 
 ---
 
-## 9. Red Task Format
+## 9. Task Format
 
-Preferred form:
+Every task must be brief and use only the following headings:
 
 ```text
-Create a test that verifies <specific behavior>.
+### Current TDD State
 
-Do not change production code yet.
+<Compiler Red / Red / Green / Refactor>
 
-Run the test and confirm that it is Red for the expected reason.
+### Task
+
+<One action only. Include the behavior and a short overview of any class or method that must be used or created. State the minimum boundary that prevents work from advancing into the next phase.>
+
+### Target File
+
+<One file in principle; the minimum set only when unavoidable>
 ```
+
+Do not add separate `Context`, `Why`, `Learning Focus`, `Constraints`, `Out of Scope`, or `Hint` sections to the normal task. The review immediately before the task carries the necessary rationale. Put only an essential constraint in `Task`.
 
 Example:
 
 ```text
-Create a test that verifies that depositing a positive amount increases the BankAccount current balance.
+### Current TDD State
 
-Do not change production code yet.
+Compiler Red
 
-Run the test and confirm that it fails for the expected reason.
+### Task
+
+To make the current test compile, add `ProvisionCustomerUseCase` and only the constructor currently required by the test. Do not implement customer-provisioning behavior yet.
+
+### Target File
+
+`src/main/java/.../ProvisionCustomerUseCase.java`
 ```
 
 ---
 
 ## 10. Red Review
 
+Java TDD may pass through two Red states:
+
+```text
+Compiler Red
+↓
+Minimum missing type or signature
+↓
+Behavioral Red
+```
+
+`Compiler Red` is valid when the test cannot compile because a production type or signature does not exist yet. The next task adds only what is required for compilation. It does not implement the behavior being tested.
+
+`Behavioral Red` means the test compiles and fails because the intended behavior is absent or incorrect.
+
 After the developer reports Red, AI checks:
 
+- whether the state is Compiler Red or Behavioral Red;
 - the test expresses the intended behavior;
 - failure occurred for the intended reason;
 - the assertion is meaningful;
@@ -268,9 +312,17 @@ If Red is caused by an unrelated failure, fix the test setup or environment befo
 Preferred form:
 
 ```text
-Implement the minimum production change required to make the previous test Green.
+### Current TDD State
 
-Do not implement <future behavior> yet.
+Red
+
+### Task
+
+Implement only the minimum production change required to make the currently failing test Green. Do not implement the next behavior or refactor in this task.
+
+### Target File
+
+<production file>
 ```
 
 The objective is not code golf. "Minimum" means enough to satisfy the current behavior, with no speculative future feature, while still remaining reasonable Java.
@@ -279,7 +331,23 @@ The objective is not code golf. "Minimum" means enough to satisfy the current be
 
 ## 12. Green Review
 
-After Green, AI reviews:
+After Green, AI does not mechanically move to Refactor or to the next requirement. It first reviews the current evidence.
+
+The review must communicate concise, observable reasoning rather than merely announce the next task.
+
+Use this order:
+
+```text
+Current State
+Review
+Observable Rationale
+Decision
+Next Task
+```
+
+`Observable Rationale` must refer to the current code, test result, or an identified specification statement.
+
+AI reviews:
 
 ```text
 Correctness
@@ -309,6 +377,18 @@ Consider
 
 The developer performs the correction. AI does not immediately replace the implementation with a finished solution.
 
+Examples of valid rationale:
+
+```text
+The same Business Rule is implemented in two methods, so it currently has two responsibility owners. The next step is one refactoring that gives the rule a single owner.
+```
+
+```text
+No meaningful duplication, mixed responsibility, unclear naming, or inappropriate dependency is visible. The requirement "each customer has a unique customer ID" is still untested, so the next step is a Red task for that behavior.
+```
+
+Do not use a general rule such as `DDD recommends it`, `SOLID recommends it`, or `repositories are usually interfaces` as the sole rationale.
+
 ---
 
 # Part III — Refactoring
@@ -325,29 +405,47 @@ No refactor is necessary for this cycle.
 
 Then continue to the next Red.
 
+Valid evidence may include:
+
+- meaningful duplication;
+- mixed responsibilities;
+- a name that obscures intent or Domain meaning;
+- an inappropriate dependency direction;
+- repeated dependence on the same external role;
+- coupling that makes the current behavior difficult to test;
+- a Domain concept scattered as primitive values;
+- excessive method or test complexity.
+
+An interface may be a reasonable result of refactoring when the current code reveals a stable role or boundary and abstraction improves the present design. It is not required merely because a Repository or Service is commonly represented by an interface.
+
 ---
 
-## 14. Normal Refactor Task Format
+## 14. Green-to-Next-Step Decision
 
-When a refactor is justified, explain:
+After every Green:
 
 ```text
-Current Problem
-Reason
-Target Improvement
-Behavior Constraint
+Observe current code and tests
+↓
+Is there concrete refactoring pressure?
+├─ Yes: select one smallest justified refactoring
+└─ No: return to the relevant specification
+          ↓
+        select one smallest untested behavior
+          ↓
+        create the next Red
 ```
 
-Example:
+If Refactor is selected, the review must identify the concrete code evidence and the task must preserve all existing behavior.
+
+If the next Red is selected, cite the relevant requirement, Use Case, or Business Rule in the review and name the one behavior that remains untested.
+
+The task itself still uses only:
 
 ```text
-The validation is duplicated in two methods.
-
-This makes the same Business Rule changeable from multiple places.
-
-Refactor so the rule has one responsibility owner.
-
-Keep all existing tests Green.
+Current TDD State
+Task
+Target File
 ```
 
 ---
@@ -387,6 +485,15 @@ result
 These names are not prohibited.
 
 Rename only when a more specific name materially improves readability or Domain meaning. Do not perform naming changes purely for stylistic preference.
+
+When a naming refactor is justified, the review provides the answer before the task:
+
+```text
+Current name → Recommended name
+Reason: <how the replacement makes intent or responsibility clearer>
+```
+
+Do not ask the developer to devise a replacement name as a separate task. The following Refactor task may ask the developer to apply the reviewed names while preserving behavior.
 
 ---
 
@@ -783,6 +890,7 @@ Next Action
 Use one of:
 
 ```text
+COMPILER_RED
 RED
 GREEN
 REFACTOR
@@ -791,6 +899,8 @@ REVIEW
 COMPLETE
 NOT_STARTED
 ```
+
+`COMPILER_RED` is the intermediate state in which the current test does not compile because a deliberately missing production type or signature is required. `RED` means the test compiles and fails for the intended behavioral reason.
 
 ---
 

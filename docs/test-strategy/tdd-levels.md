@@ -14,7 +14,27 @@ Green
 Refactor
 ```
 
-The failing test should describe the desired behavior before production code is added.
+The test should describe the desired behavior before that production behavior is implemented.
+
+In Java, Red may contain two stages:
+
+```text
+Compiler Red
+↓
+Minimum missing type or signature
+↓
+Behavioral Red
+↓
+Minimum behavior implementation
+↓
+Green
+```
+
+`Compiler Red` is valid when the current test does not compile because a required production class, constructor, method, or interface signature does not exist yet.
+
+Only the minimum declaration required for compilation may be added at this stage. Do not implement the business behavior until the test reaches `Behavioral Red`.
+
+An unrelated compilation, configuration, or environment failure is not an acceptable Red.
 
 ---
 
@@ -26,6 +46,7 @@ Do not force TDD mechanically onto:
 
 - simple configuration files;
 - trivial DTO declarations;
+- type or interface declarations added only to make the current behavior test compile;
 - migration files whose correctness is better verified through migration/integration tests.
 
 TDD is primarily for behavior and design feedback.
@@ -138,3 +159,46 @@ Comments are optional when code structure already communicates Given / When / Th
 **Status:** Confirmed
 
 Do not combine many unrelated rules into one oversized test unless the test is explicitly an E2E business-flow test.
+
+---
+
+## TS-012 — One TDD Task Advances One Micro-Step
+
+**Status:** Confirmed
+
+One task must perform only one of the following:
+
+- write one test for one behavior;
+- add only the type or signature required to make the current test compile;
+- make one currently failing test Green with the minimum implementation;
+- perform one justified refactoring while preserving behavior.
+
+Do not combine test creation, production behavior, and refactoring in one task.
+
+---
+
+## TS-013 — Interfaces Emerge from Current Evidence
+
+**Status:** Confirmed
+
+Defining a production interface and creating its production implementation are separate decisions.
+
+Prefer to introduce an interface during Refactor when the current code reveals a concrete role, boundary, dependency-direction problem, or testability problem.
+
+An interface may also be introduced during Red when the current behavior cannot be tested without a seam to an external dependency. In that case, define only the signature required by the current test.
+
+Do not introduce an interface only because it may be useful later, because a design principle is being studied, or because the type is conventionally represented by an interface.
+
+---
+
+## TS-014 — Test Doubles Are Allowed but Must Remain Minimal
+
+**Status:** Confirmed
+
+Dummy, Stub, Fake, Spy, and Mock are valid tools in TDD when the current test needs dependency isolation or an observable collaboration.
+
+Introduce only the Test Double behavior or observation required by the current test.
+
+Do not create stored values, counters, verification methods, or additional branches in anticipation of later tests.
+
+Prefer the simplest suitable Test Double. Use a mocking framework only when it solves a current problem, not automatically.

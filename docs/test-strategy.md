@@ -31,6 +31,71 @@ The project explicitly treats SQL as a first-class learning target. Passing func
 8. Treat SQL correctness and SQL performance as separate concerns.
 9. Use `EXPLAIN (ANALYZE, BUFFERS)` and repeatable datasets for SQL experiments.
 10. Separate performance experiments from normal fast test execution.
+11. Treat a compile failure caused by a deliberately missing production type or signature as a valid intermediate Red state.
+12. Introduce interfaces and Test Doubles only when the current test or implementation creates a concrete need for them.
+
+## TDD Boundaries and Test Doubles
+
+### Compiler Red and Behavioral Red
+
+Java TDD may move through:
+
+```text
+Compiler Red
+→ minimum missing type or signature
+→ Behavioral Red
+→ minimum implementation
+→ Green
+```
+
+`Compiler Red` means that the current test does not compile because a required class, constructor, method, or interface signature is missing.
+
+The compile-enabling change must contain only the minimum declaration needed by the current test. It must not also implement the business behavior.
+
+`Behavioral Red` means that the test compiles and fails because the behavior is absent or incorrect.
+
+An unrelated compilation, configuration, or environment failure is not an acceptable Red and must be resolved before continuing.
+
+### Production Interfaces
+
+Defining an interface and creating its production implementation are separate decisions.
+
+Do not define an interface merely because:
+
+- it may be useful later;
+- DDD or SOLID is being studied;
+- a Repository is conventionally represented by an interface;
+- a framework integration will eventually need one.
+
+Prefer to let an interface emerge during Refactor when the current code reveals a concrete boundary, role, dependency-direction problem, or testability problem.
+
+An interface may also be introduced during Red when the current behavior cannot be tested without a seam to an external dependency. In that case, define only the signature required by the current test. Do not create the production implementation in the same micro-task unless it is independently the current task.
+
+The governing rule is not `interfaces are created only during Refactor`. It is:
+
+```text
+Do not introduce an interface before its current necessity can be explained from evidence.
+```
+
+### Test Doubles
+
+Test Doubles are valid and common in TDD. They may be used to isolate a dependency or observe a collaboration without accessing the real database, clock, network, or other external mechanism.
+
+Possible roles include:
+
+- Dummy;
+- Stub;
+- Fake;
+- Spy;
+- Mock.
+
+Introduce a Test Double only when the current test requires it. Implement only the behavior or observation needed by that one test.
+
+Do not create a finished Fake, Spy, or Mock in anticipation of later tests. Do not add stored values, counters, verification methods, or branches that the current test does not use.
+
+Use the simplest suitable form. A small handwritten Test Double is often preferable while learning because its role remains visible; a mocking framework may be used when it solves a present problem, not by default.
+
+The test should verify externally meaningful behavior or collaboration. It should not become unnecessarily coupled to internal implementation steps.
 
 ## Documents
 

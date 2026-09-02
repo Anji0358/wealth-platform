@@ -130,7 +130,7 @@ where applicable.
 
 ### TS-APP-001 — Application Tests Verify Orchestration
 
-Application tests verify Use Case coordination such as:
+Application tests verify the externally meaningful result of Use Case coordination such as:
 
 ```text
 load
@@ -142,23 +142,46 @@ cross-domain coordination
 save
 ```
 
----
+Do not assert every internal call or call order merely because the implementation currently uses these steps.
 
-### TS-APP-002 — Repository Ports May Use Fake or Stub Implementations
-
-Use lightweight fake/stub repository implementations where a real database is not necessary to verify Use Case orchestration.
+Verify a collaboration directly only when that collaboration is part of the Use Case responsibility or is the only meaningful way to observe the required outcome.
 
 ---
 
-### TS-APP-003 — Mockito Is Used at Boundaries
+### TS-APP-002 — Repository Ports and Test Doubles Emerge from Current Need
 
-Mockito is appropriate for collaborators such as:
+Do not create a Repository port or Test Double in anticipation of later Application tests.
+
+First identify the current behavior to verify. If verifying that behavior requires isolating persistence or observing a save/load collaboration, introduce the smallest boundary required by the current test.
+
+A Repository interface may emerge:
+
+- during Refactor, when the current code reveals a persistence boundary or inappropriate dependency;
+- or during Red, when the current behavior cannot be tested without a seam to persistence.
+
+When a real database is unnecessary for the current orchestration test, a lightweight Stub, Fake, or Spy repository may be used.
+
+The Test Double must implement only what the current test needs. Do not add stored entities, counters, lookup behavior, verification methods, or failure modes for hypothetical future tests.
+
+Defining the Repository interface, creating a Test Double, and creating the production persistence implementation are separate decisions and should not be combined automatically into one task.
+
+---
+
+### TS-APP-003 — Mockito Is Optional at Boundaries
+
+Mockito may be appropriate for collaborators such as:
 
 - external ports;
 - repositories;
 - clock/random adapters when needed.
 
 Do not mock primitive domain values or trivial Domain Objects.
+
+Do not select Mockito automatically because a collaborator is represented by an interface.
+
+While learning, prefer a small handwritten Test Double when it makes the dependency role and observed behavior easier to understand. Use Mockito when it makes the current test clearer or avoids disproportionate Test Double code.
+
+Whether handwritten or framework-generated, verify only interactions that matter to the Use Case behavior. Avoid coupling the test to incidental implementation calls.
 
 ---
 

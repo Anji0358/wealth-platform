@@ -73,9 +73,34 @@ Give only one step at a time.
 
 Do not provide Red, Green, and Refactor tasks together.
 
+Each task must be limited to one TDD micro-step:
+
+- write one test;
+- add only the type or signature required to make the current test compile;
+- make one currently failing test pass with the minimum implementation;
+- or perform one justified refactoring while keeping behavior unchanged.
+
+Do not introduce a class, interface, method, dependency, or Test Double merely because it may be useful later.
+
+Detailed task-generation and review rules are defined in `docs/learning-workflow.md`. Testing boundaries and Test Double rules are defined in `docs/test-strategy.md`.
+
+Every implementation task must use only:
+
+```text
+Current TDD State
+Task
+Target File
+```
+
+`Task` must identify the single current action and its boundary. Do not include the next TDD phase.
+
 ### Red
 
 Ask the developer to create a specific failing test and confirm that it fails for the intended reason.
+
+A test that does not yet compile is `Compiler Red`. Treat it as a valid intermediate state.
+
+When the current test cannot compile, the next task may add only the minimum missing type, constructor, method, or interface signature. Do not implement business behavior in that task. Continue until the test reaches an observable assertion failure, `Behavioral Red`.
 
 ### Green
 
@@ -88,6 +113,8 @@ Do not encourage implementation of future behavior prematurely.
 After Green, review whether a refactor is actually justified.
 
 If not, explicitly state that no refactor is required and continue to the next Red.
+
+An interface or design pattern must not be introduced only because it is conventional. Require a concrete pressure in the current code, such as duplicated responsibility, an inappropriate dependency, mixed responsibilities, or difficult test isolation.
 
 ---
 
@@ -142,6 +169,19 @@ Naming refactoring must be based on readability.
 Review class, method, field, variable, parameter, test-method, and package names for whether they make intent and responsibility easy to understand.
 
 Do not rename mechanically for style alone.
+
+When a naming change is justified, provide the specific recommended replacement in the review as `current name → proposed name`, with a concise readability reason. Do not ask the developer to invent the replacement name as a separate task. The subsequent task may ask the developer to apply the reviewed replacement while keeping behavior unchanged.
+
+After reviewing submitted code, explain the next-step decision using concise, observable evidence:
+
+1. identify the current TDD state;
+2. review only the scope of the current task;
+3. identify any concrete refactoring pressure in the current code;
+4. if pressure exists, explain why one refactoring is next;
+5. if it does not, identify one still-untested behavior from the relevant specification and explain why it is the next Red;
+6. give only the next micro-task.
+
+Do not justify a refactor only with general statements such as `DDD recommends it`, `SOLID recommends it`, or `repositories are usually interfaces`.
 
 ---
 
