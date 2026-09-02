@@ -13,7 +13,7 @@ feature/customer-domain-model
 ## Current Learning Task
 
 ```text
-UC-CUS-002 — View Own Customer Profile
+BankAccount Domain Model — initial state, deposit, and withdrawal
 ```
 
 ## Related
@@ -21,13 +21,13 @@ UC-CUS-002 — View Own Customer Profile
 ### Use Cases
 
 ```text
-UC-CUS-002
+UC-BNK-001, UC-BNK-002, UC-BNK-003
 ```
 
 ### Business Rules
 
 ```text
-BR-CUS-001, BR-CUS-004
+BR-BNK-001, BR-BNK-002, BR-BNK-004, BR-BNK-005, BR-BNK-009
 ```
 
 ### ADR / SQL Experiment
@@ -46,6 +46,7 @@ Allowed values:
 
 ```text
 NOT_STARTED
+COMPILER_RED
 RED
 GREEN
 REFACTOR
@@ -65,37 +66,40 @@ COMPLETE
 - ProvisionCustomerUseCaseTest verifies the attributes of the Customer passed to CustomerRepository.
 - ViewOwnCustomerProfileUseCase returns the Acting Customer's basic information through ActorContext and CustomerRepository.
 - ViewOwnCustomerProfileUseCase throws NoSuchElementException when the Acting Customer does not exist.
+- BankAccount initializes Current Balance and Reserved Amount to zero, and Status to ACTIVE.
+- BankAccount supports valid deposit and withdrawal, and rejects non-positive or insufficient withdrawals/deposits.
+- AccountType supports ORDINARY_DEPOSIT and SAVINGS.
+- FROZEN is an Account Status; freezing changes Status without changing Account Type.
 
 ## Changed Files
 
 ```text
-src/main/java/com/example/wealth_platform/customer/application/ActorContext.java
-src/main/java/com/example/wealth_platform/customer/application/ViewOwnCustomerProfileUseCase.java
-src/main/java/com/example/wealth_platform/customer/domain/CustomerRepository.java
-src/test/java/com/example/wealth_platform/customer/application/ProvisionCustomerUseCaseTest.java
-src/test/java/com/example/wealth_platform/customer/application/ViewOwnCustomerProfileUseCaseTest.java
+src/main/java/com/example/wealth_platform/banking/domain/AccountStatus.java
+src/main/java/com/example/wealth_platform/banking/domain/AccountType.java
+src/main/java/com/example/wealth_platform/banking/domain/BankAccount.java
+src/test/java/com/example/wealth_platform/banking/domain/BankAccountTest.java
 ```
 
 ## Current Implementation
 
 ```text
-Customer provisioning and the basic Customer portion of profile viewing are verified. Bank Account identifiers and Securities Account presence are not implemented yet.
+The BankAccount Domain Model has initial balance, deposit, withdrawal, and the ACTIVE-to-FROZEN Status transition.
 ```
 
 ## Decisions / Reasons
 
-- ActorContext is an Application-side port for the acting Customer identity, so Application code remains independent of HTTP and authentication transport.
-- CustomerRepository returns Optional<Customer> from findById; ViewOwnCustomerProfileUseCase currently maps an absent Acting Customer to NoSuchElementException.
-- Small handwritten test doubles isolate ActorContext and CustomerRepository while keeping the Application behavior visible.
+- Whole-JPY balances use long in the current Domain Model, aligned with the data model's BIGINT semantics.
+- Available Balance is derived from Current Balance minus Reserved Amount rather than stored independently.
+- Account Type is required when creating BankAccount; it is distinct from Account Status.
 
 ## Alternatives Considered
 
-- A database or mocking framework is not used because the current tests focus solely on Application behavior.
+- A dedicated Money type is deferred until a concrete calculation or currency-complexity pressure appears.
 
 ## Review Findings
 
 ```text
-No outstanding Must Fix or Should Fix findings for the completed basic Customer-profile behavior.
+No outstanding Must Fix or Should Fix findings for the completed BankAccount behavior.
 ```
 
 ## Tests
@@ -105,6 +109,7 @@ No outstanding Must Fix or Should Fix findings for the completed basic Customer-
 ```text
 ./mvnw -Dtest=ProvisionCustomerUseCaseTest test
 ./mvnw -Dtest=ViewOwnCustomerProfileUseCaseTest test
+./mvnw -Dtest=BankAccountTest test
 ```
 
 ### Not Yet Run
@@ -122,7 +127,7 @@ The API-level representation and HTTP mapping of a missing Customer are not deci
 ## Next Action
 
 ```text
-Inspect the Account-related specifications and existing model before selecting the smallest untested UC-CUS-002 behavior.
+Verify the first permitted operation for a FROZEN Bank Account: receiving a Deposit.
 ```
 
 ## Session Resume Note
