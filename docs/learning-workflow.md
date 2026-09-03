@@ -260,6 +260,8 @@ Every task must be brief and use only the following headings:
 
 Do not add separate `Context`, `Why`, `Learning Focus`, `Constraints`, `Out of Scope`, or `Hint` sections to the normal task. The review immediately before the task carries the necessary rationale. Put only an essential constraint in `Task`.
 
+When a task asks the developer to add or replace a test, `Task` must specify the recommended test method name. Do not defer the test-name recommendation to a later review.
+
 Example:
 
 ```text
@@ -486,7 +488,7 @@ These names are not prohibited.
 
 Rename only when a more specific name materially improves readability or Domain meaning. Do not perform naming changes purely for stylistic preference.
 
-When a naming refactor is justified, the review provides the answer before the task:
+When a naming refactor is justified for an existing name, the review provides the answer before the task:
 
 ```text
 Current name → Recommended name
@@ -494,6 +496,8 @@ Reason: <how the replacement makes intent or responsibility clearer>
 ```
 
 Do not ask the developer to devise a replacement name as a separate task. The developer applies the reviewed names immediately; do not create a separate Refactor task solely for naming changes.
+
+For a test method that a forthcoming task asks the developer to add or replace, specify its recommended name directly in that task rather than in a later review.
 
 ---
 

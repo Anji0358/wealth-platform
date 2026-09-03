@@ -129,6 +129,10 @@ The developer should normally write:
 
 AI should review before offering replacement code.
 
+AI may automatically correct non-semantic formatting defects found during review,
+such as trailing whitespace. Such corrections must not change behavior, test
+intent, names, structure, or the scope of the current TDD micro-step.
+
 Do not provide a full solution unless:
 
 - the developer explicitly requests it;
@@ -170,7 +174,9 @@ Review class, method, field, variable, parameter, test-method, and package names
 
 Do not rename mechanically for style alone.
 
-When a naming change is justified, provide the specific recommended replacement in the review as `current name → proposed name`, with a concise readability reason. Do not ask the developer to invent the replacement name as a separate task. The developer applies the reviewed replacement immediately; do not issue naming changes as a separate TDD task.
+When a naming change is justified for an existing name, provide the specific recommended replacement in the review as `current name → proposed name`, with a concise readability reason. Do not ask the developer to invent the replacement name as a separate task. The developer applies the reviewed replacement immediately; do not issue naming changes as a separate TDD task.
+
+When a task asks the developer to add or replace a test, specify the recommended test method name in that task. Do not defer the test-name recommendation to a later review.
 
 After reviewing submitted code, explain the next-step decision using concise, observable evidence:
 
