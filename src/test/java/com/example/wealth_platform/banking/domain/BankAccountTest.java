@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 
 public class BankAccountTest {
 
-	private static final UUID CUSTOMER_ID =
-			UUID.fromString("11111111-1111-1111-1111-111111111111");
-
 	private static final UUID ACCOUNT_ID =
 			UUID.fromString("00000000-0000-0000-0000-000000000000");
+
+	private static final UUID CUSTOMER_ID =
+			UUID.fromString("11111111-1111-1111-1111-111111111111");
 
 	private static final Instant ACCOUNT_CREATED_AT =
 			Instant.parse("2026-09-02T00:00:00Z");
@@ -23,7 +23,7 @@ public class BankAccountTest {
 
 
 	private BankAccount ordinaryDepositAccount() {
-		return new BankAccount(CUSTOMER_ID,ACCOUNT_ID,AccountType.ORDINARY_DEPOSIT,ACCOUNT_CREATED_AT);
+		return new BankAccount(ACCOUNT_ID,CUSTOMER_ID,AccountType.ORDINARY_DEPOSIT,ACCOUNT_CREATED_AT);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class BankAccountTest {
 
 	@Test
 	void retains_savings_account_type() {
-		BankAccount account = new BankAccount(CUSTOMER_ID,ACCOUNT_ID,AccountType.SAVINGS,ACCOUNT_CREATED_AT);
+		BankAccount account = new BankAccount(ACCOUNT_ID,CUSTOMER_ID,AccountType.SAVINGS,ACCOUNT_CREATED_AT);
 
 		assertEquals(AccountType.SAVINGS, account.getAccountType());
 	}
@@ -292,7 +292,7 @@ public class BankAccountTest {
 
 	@Test
 	void rejects_null_customer_id() {
-		assertThrows(IllegalArgumentException.class, () -> new BankAccount(null,ACCOUNT_ID,AccountType.ORDINARY_DEPOSIT,ACCOUNT_CREATED_AT));
+		assertThrows(IllegalArgumentException.class, () -> new BankAccount(ACCOUNT_ID,null,AccountType.ORDINARY_DEPOSIT,ACCOUNT_CREATED_AT));
 	}
 
 	@Test
@@ -304,7 +304,7 @@ public class BankAccountTest {
 
 	@Test
 	void rejects_null_account_id() {
-		assertThrows(IllegalArgumentException.class, () -> new BankAccount(CUSTOMER_ID,null,AccountType.ORDINARY_DEPOSIT,ACCOUNT_CREATED_AT));
+		assertThrows(IllegalArgumentException.class, () -> new BankAccount(null,CUSTOMER_ID,AccountType.ORDINARY_DEPOSIT,ACCOUNT_CREATED_AT));
 
 	}
 

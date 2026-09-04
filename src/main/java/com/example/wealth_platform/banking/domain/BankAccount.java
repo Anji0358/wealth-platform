@@ -14,7 +14,7 @@ public class BankAccount {
 	private AccountStatus status = AccountStatus.ACTIVE;
 	private AccountType accountType;
 
-	BankAccount(UUID customerId,UUID accountId,AccountType accountType,Instant createdAt) {
+	public BankAccount(UUID accountId,UUID customerId,AccountType accountType,Instant createdAt) {
 		if(customerId==null||accountId==null||accountType==null||createdAt==null) {
 			throw new IllegalArgumentException();
 		}
