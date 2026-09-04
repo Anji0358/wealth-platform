@@ -13,7 +13,7 @@ feature/customer-domain-model
 ## Current Learning Task
 
 ```text
-BankAccount Domain Model — initial state, deposit, and withdrawal
+LedgerTransaction Domain Model — input immutability
 ```
 
 ## Related
@@ -21,13 +21,13 @@ BankAccount Domain Model — initial state, deposit, and withdrawal
 ### Use Cases
 
 ```text
-UC-BNK-001, UC-BNK-002, UC-BNK-003
+UC-BNK-002, UC-BNK-003
 ```
 
 ### Business Rules
 
 ```text
-BR-BNK-001, BR-BNK-002, BR-BNK-004, BR-BNK-005, BR-BNK-009
+BR-LDG-001, BR-LDG-002
 ```
 
 ### ADR / SQL Experiment
@@ -70,6 +70,11 @@ COMPLETE
 - BankAccount supports valid deposit and withdrawal, and rejects non-positive or insufficient withdrawals/deposits.
 - AccountType supports ORDINARY_DEPOSIT and SAVINGS.
 - FROZEN is an Account Status; freezing changes Status without changing Account Type.
+- A FROZEN BankAccount accepts Deposits and rejects Withdrawals.
+- BankAccount supports the implemented ACTIVE, FROZEN, and CLOSED transitions and closure conditions.
+- The first application-test Red for OpenBankAccountUseCase, including a BankAccountRepository save port and BankAccountIdGenerator port, has been written.
+- OpenBankAccountUseCase creates and saves a BankAccount with a generated ID and fixed Clock time.
+- BankAccount constructor order is `(accountId, customerId, accountType, createdAt)` because BankAccount is the constructed entity.
 
 ## Changed Files
 
@@ -77,13 +82,17 @@ COMPLETE
 src/main/java/com/example/wealth_platform/banking/domain/AccountStatus.java
 src/main/java/com/example/wealth_platform/banking/domain/AccountType.java
 src/main/java/com/example/wealth_platform/banking/domain/BankAccount.java
+src/main/java/com/example/wealth_platform/banking/domain/BankAccountRepository.java
+src/main/java/com/example/wealth_platform/banking/application/BankAccountIdGenerator.java
+src/main/java/com/example/wealth_platform/banking/application/OpenBankAccountUseCase.java
 src/test/java/com/example/wealth_platform/banking/domain/BankAccountTest.java
+src/test/java/com/example/wealth_platform/banking/application/OpenBankAccountUseCaseTest.java
 ```
 
 ## Current Implementation
 
 ```text
-The BankAccount Domain Model has initial balance, deposit, withdrawal, and the ACTIVE-to-FROZEN Status transition.
+LedgerTransaction rejects collections with fewer than two Ledger Entries, non-zero sums, and arithmetic overflow; accepts a valid zero-sum transaction; and retains its Entries. LedgerEntry rejects a zero amount and a null Ledger Account ID, and retains its Ledger Account ID and signed amount.
 ```
 
 ## Decisions / Reasons
@@ -95,6 +104,7 @@ The BankAccount Domain Model has initial balance, deposit, withdrawal, and the A
 ## Alternatives Considered
 
 - A dedicated Money type is deferred until a concrete calculation or currency-complexity pressure appears.
+- Customer and Bank Account IDs remain UUIDs for now; a type-safe ID value object is deferred until repeated positional-ID errors justify its scope.
 
 ## Review Findings
 
@@ -110,12 +120,14 @@ No outstanding Must Fix or Should Fix findings for the completed BankAccount beh
 ./mvnw -Dtest=ProvisionCustomerUseCaseTest test
 ./mvnw -Dtest=ViewOwnCustomerProfileUseCaseTest test
 ./mvnw -Dtest=BankAccountTest test
+./mvnw -Dtest=BankAccountTest,OpenBankAccountUseCaseTest test
 ```
 
 ### Not Yet Run
 
 ```text
 ./mvnw test: Customer-related tests pass; WealthPlatformApplicationTests.contextLoads fails because PostgreSQL is unavailable.
+./mvnw clean -Dtest=OpenBankAccountUseCaseTest test: could not run because Maven could not write the missing clean-plugin artifact to the read-only ~/.m2 cache.
 ```
 
 ## Open Questions
@@ -127,7 +139,7 @@ The API-level representation and HTTP mapping of a missing Customer are not deci
 ## Next Action
 
 ```text
-Verify the first permitted operation for a FROZEN Bank Account: receiving a Deposit.
+Write the next Red: mutating the source Entry list after LedgerTransaction creation does not change the transaction's Entries.
 ```
 
 ## Session Resume Note
