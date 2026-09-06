@@ -135,6 +135,18 @@ Commit
 
 A commit should normally represent a usable checkpoint where relevant tests pass.
 
+### GIT-007a — Automatically Commit Completed Learning Tasks
+
+After one completed logical learning task, AI automatically creates one local commit when all of the following are true:
+
+```text
+the task's relevant tests pass
+the diff has been reviewed
+the commit contains only changes belonging to that task
+```
+
+This automation authorizes local staging and committing only. It does not authorize push, merge, rebase, reset, branch deletion, or force operations.
+
 ### GIT-008 — Keep Commits Small but Meaningful
 
 Avoid both extremes: huge unrelated commits and meaningless one-line commits.

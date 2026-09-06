@@ -272,7 +272,9 @@ Follow `docs/git-workflow.md`.
 
 AI may inspect Git state and diffs.
 
-Commit, push, merge, rebase, reset, branch deletion, and force operations require explicit user instruction.
+After one completed logical learning task, AI automatically creates one local commit when the relevant tests pass, the diff has been reviewed, and the commit contains only that task's changes. This standing instruction authorizes `git add` and `git commit` for those completed tasks.
+
+Push, merge, rebase, reset, branch deletion, and force operations require explicit user instruction.
 
 Do not revert unrelated existing changes.
 
