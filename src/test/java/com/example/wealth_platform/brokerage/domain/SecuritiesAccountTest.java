@@ -145,4 +145,18 @@ public class SecuritiesAccountTest {
 		assertEquals(securitiesAccount.getAvailableBalance(),100L);
 	}
 
+	@Test
+	void allows_send_amount_equal_to_available_balance(){
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+
+		securitiesAccount.receiveCash(100L);
+		assertDoesNotThrow(()->securitiesAccount.sendCash(100L));
+		assertEquals(securitiesAccount.getCurrentBalance(),0);
+		assertEquals(securitiesAccount.getAvailableBalance(),0);
+	}
+
 }
