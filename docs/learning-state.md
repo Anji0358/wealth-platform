@@ -13,7 +13,7 @@ feature/customer-domain-model
 ## Current Learning Task
 
 ```text
-LedgerTransaction Domain Model — input immutability
+LedgerAccount Domain Model — base identity
 ```
 
 ## Related
@@ -27,7 +27,7 @@ UC-BNK-002, UC-BNK-003
 ### Business Rules
 
 ```text
-BR-LDG-001, BR-LDG-002
+BR-LDG-001, BR-LDG-002, BR-LDG-003
 ```
 
 ### ADR / SQL Experiment
@@ -75,6 +75,8 @@ COMPLETE
 - The first application-test Red for OpenBankAccountUseCase, including a BankAccountRepository save port and BankAccountIdGenerator port, has been written.
 - OpenBankAccountUseCase creates and saves a BankAccount with a generated ID and fixed Clock time.
 - BankAccount constructor order is `(accountId, customerId, accountType, createdAt)` because BankAccount is the constructed entity.
+- LedgerTransaction snapshots its source Entries and does not expose mutable Entries.
+- LedgerAccount retains its ID and kind as a Ledger-specific identity.
 
 ## Changed Files
 
@@ -87,12 +89,17 @@ src/main/java/com/example/wealth_platform/banking/application/BankAccountIdGener
 src/main/java/com/example/wealth_platform/banking/application/OpenBankAccountUseCase.java
 src/test/java/com/example/wealth_platform/banking/domain/BankAccountTest.java
 src/test/java/com/example/wealth_platform/banking/application/OpenBankAccountUseCaseTest.java
+src/main/java/com/example/wealth_platform/ledger/domain/LedgerAccount.java
+src/main/java/com/example/wealth_platform/ledger/domain/LedgerAccountKind.java
+src/main/java/com/example/wealth_platform/ledger/domain/LedgerTransaction.java
+src/test/java/com/example/wealth_platform/ledger/domain/LedgerAccountTest.java
+src/test/java/com/example/wealth_platform/ledger/domain/LedgerTransactionTest.java
 ```
 
 ## Current Implementation
 
 ```text
-LedgerTransaction rejects collections with fewer than two Ledger Entries, non-zero sums, and arithmetic overflow; accepts a valid zero-sum transaction; and retains its Entries. LedgerEntry rejects a zero amount and a null Ledger Account ID, and retains its Ledger Account ID and signed amount.
+LedgerTransaction rejects collections with fewer than two Ledger Entries, non-zero sums, and arithmetic overflow; retains an immutable snapshot of valid Entries. LedgerEntry rejects a zero amount and a null Ledger Account ID, and retains its Ledger Account ID and signed amount. LedgerAccount retains its UUID and kind.
 ```
 
 ## Decisions / Reasons
@@ -121,6 +128,7 @@ No outstanding Must Fix or Should Fix findings for the completed BankAccount beh
 ./mvnw -Dtest=ViewOwnCustomerProfileUseCaseTest test
 ./mvnw -Dtest=BankAccountTest test
 ./mvnw -Dtest=BankAccountTest,OpenBankAccountUseCaseTest test
+./mvnw -Dtest=LedgerEntryTest,LedgerTransactionTest,LedgerAccountTest test
 ```
 
 ### Not Yet Run
@@ -139,7 +147,7 @@ The API-level representation and HTTP mapping of a missing Customer are not deci
 ## Next Action
 
 ```text
-Write the next Red: mutating the source Entry list after LedgerTransaction creation does not change the transaction's Entries.
+Select the next Phase 1 Domain Model behavior from the relevant specification.
 ```
 
 ## Session Resume Note
