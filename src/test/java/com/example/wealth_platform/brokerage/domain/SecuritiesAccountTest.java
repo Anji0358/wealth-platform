@@ -117,5 +117,19 @@ public class SecuritiesAccountTest {
 		assertEquals(securitiesAccount.getAvailableBalance(),100L);
 	}
 
+	@Test
+	void rejects_negative_amount_when_sending_cash() {
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+
+		securitiesAccount.receiveCash(100L);
+		assertThrows(IllegalArgumentException.class,()->securitiesAccount.sendCash(-50L));
+		assertEquals(securitiesAccount.getCurrentBalance(),100L);
+		assertEquals(securitiesAccount.getAvailableBalance(),100L);
+	}
+
 
 }
