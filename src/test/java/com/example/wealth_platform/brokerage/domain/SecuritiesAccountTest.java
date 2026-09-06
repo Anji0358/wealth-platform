@@ -27,4 +27,15 @@ public class SecuritiesAccountTest {
 		assertEquals(securitiesAccount.getAccountStatus(),SecuritiesAccountStatus.ACTIVE);
 
 	}
+
+	@Test
+	void initializes_with_zero_available_balance() {
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+
+		assertEquals(securitiesAccount.getAvailableBalance(),0L);
+	}
 }

@@ -104,7 +104,7 @@ src/test/java/com/example/wealth_platform/brokerage/domain/SecuritiesAccountTest
 
 ```text
 LedgerTransaction rejects collections with fewer than two Ledger Entries, non-zero sums, and arithmetic overflow; retains an immutable snapshot of valid Entries. LedgerEntry rejects a zero amount and a null Ledger Account ID, and retains its Ledger Account ID and signed amount. LedgerAccount retains its UUID and kind.
-SecuritiesAccount initializes its cash balances to zero and its status to ACTIVE.
+SecuritiesAccount initializes its cash balances and Available Balance to zero and its status to ACTIVE.
 ```
 
 ## Decisions / Reasons
@@ -153,7 +153,7 @@ The API-level representation and HTTP mapping of a missing Customer are not deci
 ## Next Action
 
 ```text
-Write the next Red: SecuritiesAccount derives Available Balance from Current Balance minus Reserved Amount.
+Write the next Red: SecuritiesAccount increases its cash balance when it receives a positive amount.
 ```
 
 ## Session Resume Note

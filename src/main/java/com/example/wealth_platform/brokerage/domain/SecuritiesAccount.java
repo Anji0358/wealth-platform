@@ -44,4 +44,8 @@ public class SecuritiesAccount {
 	public long getReservedAmount() {
 		return reservedAmount;
 	}
+
+	public long getAvailableBalance() {
+		return currentBalance-reservedAmount;
+	}
 }
