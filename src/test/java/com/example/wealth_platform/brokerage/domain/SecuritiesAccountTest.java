@@ -38,4 +38,29 @@ public class SecuritiesAccountTest {
 
 		assertEquals(securitiesAccount.getAvailableBalance(),0L);
 	}
+
+	@Test
+	void increases_cash_balance_when_receiving_positive_amount() {
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+		securitiesAccount.receiveCash(100L);
+		assertEquals(securitiesAccount.getCurrentBalance(),100);
+		assertEquals(securitiesAccount.getAvailableBalance(),100L);
+	}
+
+	@Test
+	void rejects_zero_amount_when_receiving_cash() {
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+		assertThrows(IllegalArgumentException.class,()->securitiesAccount.receiveCash(0L));
+		assertEquals(securitiesAccount.getCurrentBalance(),0L);
+		assertEquals(securitiesAccount.getAvailableBalance(),0L);
+
+	}
 }

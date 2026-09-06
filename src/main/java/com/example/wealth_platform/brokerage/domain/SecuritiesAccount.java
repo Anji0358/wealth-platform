@@ -48,4 +48,17 @@ public class SecuritiesAccount {
 	public long getAvailableBalance() {
 		return currentBalance-reservedAmount;
 	}
+
+	public void receiveCash(long amount) {
+		if(amount <= 0) {
+			throw new IllegalArgumentException();
+		}
+
+		if(currentBalance >= Long.MAX_VALUE - amount) {
+			throw new IllegalArgumentException();
+
+		}
+
+		currentBalance+=amount;
+	}
 }
