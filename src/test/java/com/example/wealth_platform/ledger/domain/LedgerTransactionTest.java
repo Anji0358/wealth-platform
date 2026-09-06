@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 public class LedgerTransactionTest {
 	UUID LEDGER_ACCOUNT_ID=UUID.fromString("00000000-0000-0000-0000-000000000000");
 	UUID LEDGER_ACCOUNT_ID_1=UUID.fromString("00000000-0000-0000-0000-000000000001");
+	UUID LEDGER_ACCOUNT_ID_2=UUID.fromString("00000000-0000-0000-0000-000000000002");
 
 	@Test
 	void rejects_transaction_with_fewer_than_two_entries() {
@@ -71,6 +72,37 @@ public class LedgerTransactionTest {
 
 		LedgerTransaction ledgerTransaction=new LedgerTransaction(ledgerEntryList);
 		assertEquals(ledgerTransaction.getEntries(),ledgerEntryList);
+
+	}
+
+	@Test
+	void does_not_change_entries_when_source_list_is_mutated_after_creation() {
+		LedgerEntry ledgerEntry1=new LedgerEntry(LEDGER_ACCOUNT_ID,100L);
+		LedgerEntry ledgerEntry2=new LedgerEntry(LEDGER_ACCOUNT_ID_1,-100L);
+		LedgerEntry ledgerEntry3=new LedgerEntry(LEDGER_ACCOUNT_ID_2,100L);
+
+		ArrayList<LedgerEntry> ledgerEntryList=new ArrayList<>();
+		ledgerEntryList.add(ledgerEntry1);
+		ledgerEntryList.add(ledgerEntry2);
+
+		LedgerTransaction ledgerTransaction=new LedgerTransaction(ledgerEntryList);
+		ledgerEntryList.add(ledgerEntry3) ;
+		assertEquals(ledgerTransaction.getEntries().size(),2);
+	}
+
+	@Test
+	void does_not_allow_entries_to_be_modified() {
+		LedgerEntry ledgerEntry1=new LedgerEntry(LEDGER_ACCOUNT_ID,100L);
+		LedgerEntry ledgerEntry2=new LedgerEntry(LEDGER_ACCOUNT_ID_1,-100L);
+		LedgerEntry ledgerEntry3=new LedgerEntry(LEDGER_ACCOUNT_ID_2,100L);
+
+		ArrayList<LedgerEntry> ledgerEntryList=new ArrayList<>();
+		ledgerEntryList.add(ledgerEntry1);
+		ledgerEntryList.add(ledgerEntry2);
+		LedgerTransaction ledgerTransaction=new LedgerTransaction(ledgerEntryList);
+
+		assertThrows(UnsupportedOperationException.class,()->ledgerTransaction.getEntries().add(ledgerEntry3));
+		assertEquals(ledgerTransaction.getEntries().size(),2);
 
 	}
 

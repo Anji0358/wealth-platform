@@ -1,10 +1,12 @@
 package com.example.wealth_platform.ledger.domain;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LedgerTransaction {
 
-	private List<LedgerEntry> ledgerEntries;
+	private final List<LedgerEntry> ledgerEntries;
 
     LedgerTransaction(List<LedgerEntry> ledgerEntryList) {
 
@@ -29,10 +31,10 @@ public class LedgerTransaction {
             throw new IllegalArgumentException();
         }
 
-        this.ledgerEntries=ledgerEntryList;
+        this.ledgerEntries=new ArrayList<>(ledgerEntryList);
     }
 
     public List<LedgerEntry> getEntries() {
-        return ledgerEntries;
+        return Collections.unmodifiableList(ledgerEntries);
     }
 }
