@@ -131,5 +131,18 @@ public class SecuritiesAccountTest {
 		assertEquals(securitiesAccount.getAvailableBalance(),100L);
 	}
 
+	@Test
+	void rejects_send_amount_exceeding_available_balance() {
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+
+		securitiesAccount.receiveCash(100L);
+		assertThrows(IllegalArgumentException.class,()->securitiesAccount.sendCash(101L));
+		assertEquals(securitiesAccount.getCurrentBalance(),100L);
+		assertEquals(securitiesAccount.getAvailableBalance(),100L);
+	}
 
 }

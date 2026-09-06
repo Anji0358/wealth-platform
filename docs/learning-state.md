@@ -104,7 +104,7 @@ src/test/java/com/example/wealth_platform/brokerage/domain/SecuritiesAccountTest
 
 ```text
 LedgerTransaction rejects collections with fewer than two Ledger Entries, non-zero sums, and arithmetic overflow; retains an immutable snapshot of valid Entries. LedgerEntry rejects a zero amount and a null Ledger Account ID, and retains its Ledger Account ID and signed amount. LedgerAccount retains its UUID and kind.
-SecuritiesAccount initializes its cash balances and Available Balance to zero and its status to ACTIVE; it receives positive cash, rejects non-positive receipts, permits a receipt that reaches Long.MAX_VALUE, sends cash within Available Balance, and rejects non-positive send amounts.
+SecuritiesAccount initializes its cash balances and Available Balance to zero and its status to ACTIVE; it receives positive cash, rejects non-positive receipts, permits a receipt that reaches Long.MAX_VALUE, sends cash within Available Balance, rejects non-positive send amounts, and rejects sends exceeding Available Balance.
 ```
 
 ## Decisions / Reasons
@@ -153,7 +153,7 @@ The API-level representation and HTTP mapping of a missing Customer are not deci
 ## Next Action
 
 ```text
-Write the next Red: SecuritiesAccount rejects sending more than Available Balance without changing balances.
+Add the next verification test: SecuritiesAccount allows sending exactly Available Balance.
 ```
 
 ## Session Resume Note
