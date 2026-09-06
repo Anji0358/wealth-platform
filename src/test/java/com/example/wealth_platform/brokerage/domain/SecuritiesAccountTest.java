@@ -76,4 +76,16 @@ public class SecuritiesAccountTest {
 		assertEquals(securitiesAccount.getAvailableBalance(),0L);
 
 	}
+
+	@Test
+	void accepts_cash_receipt_that_reaches_long_max_value() {
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+		assertDoesNotThrow(()->securitiesAccount.receiveCash(Long.MAX_VALUE));
+		assertEquals(securitiesAccount.getCurrentBalance(),Long.MAX_VALUE);
+		assertEquals(securitiesAccount.getAvailableBalance(),Long.MAX_VALUE);
+	}
 }

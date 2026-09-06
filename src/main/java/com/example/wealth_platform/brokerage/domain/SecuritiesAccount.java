@@ -54,7 +54,7 @@ public class SecuritiesAccount {
 			throw new IllegalArgumentException();
 		}
 
-		if(currentBalance >= Long.MAX_VALUE - amount) {
+		if(currentBalance > Long.MAX_VALUE - amount) {
 			throw new IllegalArgumentException();
 
 		}
