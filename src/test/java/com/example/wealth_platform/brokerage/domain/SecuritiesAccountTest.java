@@ -88,4 +88,18 @@ public class SecuritiesAccountTest {
 		assertEquals(securitiesAccount.getCurrentBalance(),Long.MAX_VALUE);
 		assertEquals(securitiesAccount.getAvailableBalance(),Long.MAX_VALUE);
 	}
+
+	@Test
+	void decreases_cash_balance_when_sending_amount_within_available_balance() {
+		SecuritiesAccount securitiesAccount=new SecuritiesAccount(
+				SECURITIES_ACCOUNT_ID,
+				CUSTOMER_ID,
+				CREATED_AT
+				);
+		securitiesAccount.receiveCash(100L);
+		securitiesAccount.sendCash(40L);
+		assertEquals(securitiesAccount.getCurrentBalance(),60L);
+		assertEquals(securitiesAccount.getAvailableBalance(),60L);
+
+	}
 }

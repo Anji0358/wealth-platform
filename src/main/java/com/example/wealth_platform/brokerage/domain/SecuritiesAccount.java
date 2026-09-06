@@ -61,4 +61,16 @@ public class SecuritiesAccount {
 
 		currentBalance+=amount;
 	}
+
+	public void sendCash(long amount) {
+
+		if(amount <= 0){
+			throw new IllegalArgumentException();
+		}
+		if(this.getAvailableBalance() < amount) {
+			throw new IllegalArgumentException();
+		}
+
+		currentBalance-=amount;
+	}
 }
