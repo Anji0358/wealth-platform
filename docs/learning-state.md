@@ -13,7 +13,7 @@ feature/customer-domain-model
 ## Current Learning Task
 
 ```text
-LedgerAccount Domain Model — base identity
+SecuritiesAccount Domain Model — initial state
 ```
 
 ## Related
@@ -21,13 +21,13 @@ LedgerAccount Domain Model — base identity
 ### Use Cases
 
 ```text
-UC-BNK-002, UC-BNK-003
+UC-BRK-001
 ```
 
 ### Business Rules
 
 ```text
-BR-LDG-001, BR-LDG-002, BR-LDG-003
+BR-BRK-005
 ```
 
 ### ADR / SQL Experiment
@@ -77,6 +77,7 @@ COMPLETE
 - BankAccount constructor order is `(accountId, customerId, accountType, createdAt)` because BankAccount is the constructed entity.
 - LedgerTransaction snapshots its source Entries and does not expose mutable Entries.
 - LedgerAccount retains its ID and kind as a Ledger-specific identity.
+- SecuritiesAccount starts with zero current and reserved balances and ACTIVE status.
 
 ## Changed Files
 
@@ -94,12 +95,16 @@ src/main/java/com/example/wealth_platform/ledger/domain/LedgerAccountKind.java
 src/main/java/com/example/wealth_platform/ledger/domain/LedgerTransaction.java
 src/test/java/com/example/wealth_platform/ledger/domain/LedgerAccountTest.java
 src/test/java/com/example/wealth_platform/ledger/domain/LedgerTransactionTest.java
+src/main/java/com/example/wealth_platform/brokerage/domain/SecuritiesAccount.java
+src/main/java/com/example/wealth_platform/brokerage/domain/SecuritiesAccountStatus.java
+src/test/java/com/example/wealth_platform/brokerage/domain/SecuritiesAccountTest.java
 ```
 
 ## Current Implementation
 
 ```text
 LedgerTransaction rejects collections with fewer than two Ledger Entries, non-zero sums, and arithmetic overflow; retains an immutable snapshot of valid Entries. LedgerEntry rejects a zero amount and a null Ledger Account ID, and retains its Ledger Account ID and signed amount. LedgerAccount retains its UUID and kind.
+SecuritiesAccount initializes its cash balances to zero and its status to ACTIVE.
 ```
 
 ## Decisions / Reasons
@@ -129,6 +134,7 @@ No outstanding Must Fix or Should Fix findings for the completed BankAccount beh
 ./mvnw -Dtest=BankAccountTest test
 ./mvnw -Dtest=BankAccountTest,OpenBankAccountUseCaseTest test
 ./mvnw -Dtest=LedgerEntryTest,LedgerTransactionTest,LedgerAccountTest test
+./mvnw -Dtest=SecuritiesAccountTest test
 ```
 
 ### Not Yet Run
@@ -147,7 +153,7 @@ The API-level representation and HTTP mapping of a missing Customer are not deci
 ## Next Action
 
 ```text
-Select the next Phase 1 Domain Model behavior from the relevant specification.
+Write the next Red: SecuritiesAccount derives Available Balance from Current Balance minus Reserved Amount.
 ```
 
 ## Session Resume Note
